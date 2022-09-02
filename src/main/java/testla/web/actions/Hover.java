@@ -8,6 +8,9 @@ import testla.web.abilities.BrowseTheWeb;
 
 import java.util.List;
 
+/**
+ * Action Class. Hover over an element specified by a selector string.
+ */
 public class Hover extends Action {
     private final String selector;
     private final SelectorOptions options;
@@ -37,6 +40,11 @@ public class Hover extends Action {
         this.modifiers = modifiers;
     }
 
+    /**
+     * find the specified selector and hover over it.
+     *
+     * @param actor the actor.
+     */
     @Override
     public Object performAs(IActor actor) {
         if(this.options != null) {
@@ -57,18 +65,42 @@ public class Hover extends Action {
         return null;
     }
 
+    /**
+     * Specify which selector should be hovered over
+     *
+     * @param selector The selector that should be hovered over.
+     */
     public static Hover over(String selector) {
         return new Hover(selector);
     }
 
+    /**
+     * Specify which selector should be hovered over
+     *
+     * @param selector The selector that should be hovered over.
+     * @param options advanced selector lookup options.
+     */
     public static Hover over(String selector, SelectorOptions options) {
         return new Hover(selector, options);
     }
 
+    /**
+     * Specify which selector should be hovered over
+     *
+     * @param selector The selector that should be hovered over.
+     * @param modifiers modifier keys to press. Ensures that only these modifiers are pressed during the operation.
+     */
     public static Hover over(String selector, List<KeyboardModifier> modifiers) {
         return new Hover(selector, modifiers);
     }
 
+    /**
+     * Specify which selector should be hovered over
+     *
+     * @param selector The selector that should be hovered over.
+     * @param options advanced selector lookup options
+     * @param modifiers Modifier keys to press. Ensures that only these modifiers are pressed during the operation.
+     */
     public static Hover over(String selector, SelectorOptions options, List<KeyboardModifier> modifiers) {
         return new Hover(selector, options, modifiers);
     }

@@ -3,9 +3,7 @@ package testla.web;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * TODO: Add Description
- *
- * @author Patrick Döring
+ * Class that represents a subselector for another selector.
  */
 public class SubSelector {
     public String selector;

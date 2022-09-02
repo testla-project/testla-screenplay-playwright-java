@@ -6,6 +6,9 @@ import testla.screenplay.actor.IActor;
 import testla.web.SelectorOptions;
 import testla.web.abilities.BrowseTheWeb;
 
+/**
+ * Action Class. Wait for either a specified loading state or for a selector to become visible/active.
+ */
 public class Wait extends Action {
 
     private final String mode;
@@ -31,6 +34,11 @@ public class Wait extends Action {
         this.options = options;
     }
 
+    /**
+     * wait for either a specified loading state or for a selector to become visible/active.
+     *
+     * @param actor the actor.
+     */
     @Override
     public Object performAs(IActor actor) {
         switch (this.mode) {
@@ -50,14 +58,30 @@ public class Wait extends Action {
         }
     }
 
+    /**
+     * Wait for a specific status of the page.
+     *
+     * @param state either 'load', 'domcontentloaded' or 'networkidle'
+     */
     public static Wait forLoadState(LoadState state) {
         return new Wait("loadState", state);
     }
 
+    /**
+     * Wait for a specific selector to exist.
+     *
+     * @param selector the selector.
+     */
     public static Wait forSelector(String selector) {
         return new Wait("selector", selector);
     }
 
+    /**
+     * Wait for a specific selector to exist.
+     *
+     * @param selector the selector.
+     * @param options advanced selector lookup options.
+     */
     public static Wait forSelector(String selector, SelectorOptions options) {
         return new Wait("selector", selector, options);
     }

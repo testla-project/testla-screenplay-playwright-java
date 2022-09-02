@@ -6,9 +6,7 @@ import testla.web.SelectorOptions;
 import testla.web.abilities.BrowseTheWeb;
 
 /**
- * TODO: Add Description
- *
- * @author Patrick Döring
+ * Action Class. Check a checkbox specified by a selector string.
  */
 public class Check extends Action {
 
@@ -25,13 +23,30 @@ public class Check extends Action {
         this.options = options;
     }
 
+    /**
+     * specify which element should be clicked on
+     *
+     * @param selector the string representing the selector.
+     */
     public static Check element(String selector) {
         return new Check(selector);
     }
 
+    /**
+     * specify which element should be clicked on
+     *
+     * @param selector the string representing the selector.
+     * @param options advanced selector lookup options.
+     */
     public static Check element(String selector, SelectorOptions options) {
         return new Check(selector, options);
     }
+
+    /**
+     * find the specified selector and click on it.
+     *
+     * @param actor the actor.
+     */
     @Override
     public Object performAs(IActor actor) {
         if (this.options == null) {

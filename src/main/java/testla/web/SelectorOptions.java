@@ -3,9 +3,7 @@ package testla.web;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * TODO: Add Description
- *
- * @author Patrick Döring
+ * Class that holds elements to help with advanced selector options.
  */
 public class SelectorOptions {
     @Nullable

@@ -16,6 +16,9 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * This class represents the actor's ability to send API requests.
+ */
 public class UseAPI extends Ability {
 
     private final APIRequestContext requestContext;
@@ -25,15 +28,45 @@ public class UseAPI extends Ability {
         this.requestContext = requestContext;
     }
 
+    /**
+     * Get the request context object
+     *
+     *  @returns ApiRequestContext
+     */
+    public APIRequestContext getRequestContext() {
+        return this.requestContext;
+    }
+
+    /**
+     * Initialize this Ability by passing an already existing Playwright APIRequestContext object.
+     *
+     * @param requestContext the Playwright APIRequestContext that will be used to send REST requests.
+     * @returns UseAPI
+     */
     public static UseAPI using(APIRequestContext requestContext) {
         UseAPI.instance = new UseAPI(requestContext);
         return UseAPI.instance;
     }
 
+    /**
+     * Use this Ability as an Actor.
+     *
+     * @param actor the actor.
+     * @returns UseAPI
+     */
     public static UseAPI as(IActor actor) {
         return (UseAPI) actor.withAbilityTo(UseAPI.instance);
     }
 
+    /**
+     * Send a HTTP request (GET, POST, PATCH, PUT, HEAD or DELETE) to the specified url. Headers and data can also be sent.
+     *
+     * @param method GET, POST, PATCH, PUT, HEAD or DELETE.
+     * @param url the full URL to the target.
+     * @param options optional headers and data to send.
+     * @param responseBodyFormat (optional) specify the desired format the response body should be in.
+     * @returns a Response object consisting of status, body and headers.
+     */
     public Response sendRequest(RequestMethod method, String url, RequestOptions options, ResponseBodyFormat responseBodyFormat) {
         long start = System.currentTimeMillis();
 
@@ -81,6 +114,14 @@ public class UseAPI extends Ability {
         return new Response(resBody, res.status(), res.headers(), end-start);
     }
 
+    /**
+     * Verify if the given status is equal or unequal to the given response's status.
+     *
+     * @param mode the result to check for.
+     * @param response the response to check.
+     * @param status the status to check.
+     * @returns true if the status is equal/unequal as expected.
+     */
     // ToDo: Mode as Enum
     public boolean checkStatus(Response response, int status, String mode) {
         // ToDo: TEST IT!
@@ -88,17 +129,41 @@ public class UseAPI extends Ability {
         return true;
     }
 
+    /**
+     * Verify if the given body is equal or unequal to the given response's body.
+     *
+     * @param mode the result to check for.
+     * @param response the response to check.
+     * @param body the body to check.
+     * @returns true if the body equal/unequal as expected.
+     */
     // ToDo: Mode as Enum
     public boolean checkBody(Response response, String body, String mode) {
         assertEquals(response.body.toString().equals(body), mode.equals("equal"));
         return true;
     }
 
+    /**
+     * Verify if the given body is equal or unequal to the given response's body.
+     *
+     * @param mode the result to check for.
+     * @param response the response to check.
+     * @param body the body to check.
+     * @returns true if the body equal/unequal as expected.
+     */
     public boolean checkBody(Response response, Object body, String mode) {
         //ToDo: Use JsonMapper Jackson
         return true;
     }
 
+    /**
+     * Verify if the given body is equal or unequal to the given response's body.
+     *
+     * @param mode the result to check for.
+     * @param response the response to check.
+     * @param body the body to check.
+     * @returns true if the body equal/unequal as expected.
+     */
     public boolean checkBody(Response response, byte[] body, String mode) {
         // copied from https://stackoverflow.com/questions/2836646/java-serializable-object-to-byte-array
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -112,12 +177,28 @@ public class UseAPI extends Ability {
         return true;
     }
 
+    /**
+     * Verify if the given headers are included/excluded in the given response.
+     *
+     * @param mode the result to check for.
+     * @param response the response to check.
+     * @param headers the headers to check.
+     * @returns true if the headers are is included/excluded as expected.
+     */
     public boolean checkHeaders(Response response, Map<String, String> headers, String mode) {
         // headers should be subset of response.headers
         assertEquals(response.headers.entrySet().containsAll(headers.entrySet()), mode.equals("included"));
         return true;
     }
 
+    /**
+     * Verify if the response (including receiving body) was received within a given duration or not.
+     *
+     * @param mode the result to check for.
+     * @param response the response to check
+     * @param duration expected duration (in milliseconds) not to be exceeded
+     * @returns true if response was received within given duration, false otherwise
+     */
     public boolean checkDuration(Response response, long duration, String mode) {
         assertEquals(response.duration <= duration, mode.equals("lessOrEqual"));
         return true;

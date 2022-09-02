@@ -7,9 +7,7 @@ import testla.screenplay.question.Question;
 import java.util.Map;
 
 /**
- * TODO: Add Description
- *
- * @author Patrick Döring
+ * Question Class. Verify certain aspects of an API Response.
  */
 public class Response extends Question<Boolean> {
 
@@ -22,18 +20,30 @@ public class Response extends Question<Boolean> {
     private Object payload;
     private Class<?> oldType; // this.oldType = int;
 
-    public Response(String checkMode) {
+    private Response(String checkMode) {
         this.checkMode = checkMode;
     }
 
+    /**
+     * make the Question check for the positive.
+     */
     public static Response has() {
         return new Response("has");
     }
 
+    /**
+     * make the Question check for the negative.
+     */
     public static Response hasNot() {
         return new Response("hasNot");
     }
 
+    /**
+     * Verify if the given status is equal to the given response's status.
+     *
+     * @param response the response to check.
+     * @param statusCode the expected status code.
+     */
     public Response statusCode(testla.api.Response response, int statusCode) {
         this.response = response;
         this.mode = "status";
@@ -43,6 +53,12 @@ public class Response extends Question<Boolean> {
         return this;
     }
 
+    /**
+     * Verify if the given body is equal to the given response's body.
+     *
+     * @param response the response to check.
+     * @param body the expected body.
+     */
     public Response body(testla.api.Response response, String body) {
         this.response = response;
         this.mode = "body";
@@ -52,6 +68,12 @@ public class Response extends Question<Boolean> {
         return this;
     }
 
+    /**
+     * Verify if the given body is equal to the given response's body.
+     *
+     * @param response the response to check.
+     * @param body the expected body.
+     */
     public Response body(testla.api.Response response, Object body) {
         this.response = response;
         this.mode = "body";
@@ -61,6 +83,12 @@ public class Response extends Question<Boolean> {
         return this;
     }
 
+    /**
+     * Verify if the given body is equal to the given response's body.
+     *
+     * @param response the response to check.
+     * @param body the expected body.
+     */
     public Response body(testla.api.Response response, byte[] body) {
         this.response = response;
         this.mode = "body";
@@ -70,6 +98,12 @@ public class Response extends Question<Boolean> {
         return this;
     }
 
+    /**
+     * Verify if the given headers are included in the given response.
+     *
+     * @param response the response to check.
+     * @param headers the expected header.
+     */
     public Response headers(testla.api.Response response, Map<String, String> headers) {
         this.response = response;
         this.mode = "headers";
@@ -79,6 +113,12 @@ public class Response extends Question<Boolean> {
         return this;
     }
 
+    /**
+     * Verify if the response (including receiving body) was received within a given duration.
+     *
+     * @param response the response to check
+     * @param duration expected duration (in milliseconds) not to be exceeded
+     */
     public Response beenReceivedWithin(testla.api.Response response, long duration) {
         this.response = response;
         this.mode = "duration";

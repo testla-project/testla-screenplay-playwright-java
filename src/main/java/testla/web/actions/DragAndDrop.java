@@ -5,7 +5,13 @@ import testla.screenplay.actor.IActor;
 import testla.web.SelectorOptions;
 import testla.web.abilities.BrowseTheWeb;
 
+
+/**
+ * Action Class. DragAndDrop an element specified by a selector string and drop it on an element specified by another
+ * selector string.
+ */
 public class DragAndDrop extends Action {
+
     private final String sourceSelector;
     private final String targetSelector;
     private final SelectorOptions sourceOptions;
@@ -25,7 +31,11 @@ public class DragAndDrop extends Action {
         this.targetOptions = targetOptions;
     }
 
-
+    /**
+     * Drag the specified selector and drop it on the target.
+     *
+     * @param actor the actor.
+     */
     @Override
     public Object performAs(IActor actor) {
         if(this.sourceOptions == null) {
@@ -36,10 +46,24 @@ public class DragAndDrop extends Action {
         return null;
     }
 
+    /**
+     * Drag the specified source element to the specified target element and drop it.
+     *
+     * @param sourceSelector the selector of the source element.
+     * @param targetSelector the selector of the target element.
+     */
     public static DragAndDrop execute(String sourceSelector, String targetSelector) {
         return new DragAndDrop(sourceSelector, targetSelector);
     }
 
+    /**
+     * Drag the specified source element to the specified target element and drop it.
+     *
+     * @param sourceSelector the selector of the source element.
+     * @param targetSelector the selector of the target element.
+     * @param sourceOptions advanced selector lookup options for the source selector.
+     * @param targetOptions advanced selector lookup options for the source selector.
+     */
     public static DragAndDrop execute(String sourceSelector, String targetSelector, SelectorOptions sourceOptions, SelectorOptions targetOptions) {
         return new DragAndDrop(sourceSelector, targetSelector, sourceOptions, targetOptions);
     }

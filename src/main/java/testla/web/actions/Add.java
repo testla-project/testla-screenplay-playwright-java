@@ -8,9 +8,7 @@ import testla.web.abilities.BrowseTheWeb;
 import java.util.List;
 
 /**
- * TODO: Add Description
- *
- * @author Patrick Döring
+ * Action Class. Add Cookies to the Browser.
  */
 public class Add extends Action {
 
@@ -20,10 +18,20 @@ public class Add extends Action {
         this.cookies = cookies;
     }
 
+    /**
+     * Add the specified cookies.
+     *
+     * @param cookies the cookies to add.
+     */
     public static Add cookies(List<Cookie> cookies) {
         return new Add(cookies);
     }
 
+    /**
+     * add the cookies to the browser.
+     *
+     * @param actor the actor.
+     */
     @Override
     public Object performAs(IActor actor) {
         BrowseTheWeb.as(actor).addCookies(this.cookies);

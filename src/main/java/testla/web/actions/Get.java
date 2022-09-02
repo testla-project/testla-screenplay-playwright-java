@@ -6,7 +6,11 @@ import testla.web.abilities.BrowseTheWeb;
 
 import java.util.List;
 
+/**
+ * Action Class. Get either Cookies, Session Storage Items or Local Storage Items from the Browser.
+ */
 public class Get extends Action {
+
     private final String mode;
     private List<String> urls;
     private String payload;
@@ -26,6 +30,11 @@ public class Get extends Action {
         this.payload = payload;
     }
 
+    /**
+     * Wait for either a specified loading state or for a selector to become visible/active.
+     *
+     * @param actor the actor.
+     */
     @Override
     public Object performAs(IActor actor) {
         switch (this.mode) {
@@ -46,22 +55,45 @@ public class Get extends Action {
         }
     }
 
+    /**
+     * Get all cookies.
+     */
     public static Get cookies() {
         return new Get("cookies");
     }
 
+    /**
+     * Get the specified cookies.
+     *
+     * @param urls If URLs are specified, only cookies that affect those URLs are returned. If no URLs are specified, this all cookies are returned.
+     */
     public static Get cookies(List<String> urls) {
         return new Get("cookies", urls);
     }
 
+    /**
+     * Get the specified cookies.
+     *
+     * @param url If URLs are specified, only cookies that affect those URLs are returned. If no URLs are specified, this all cookies are returned.
+     */
     public static Get cookies(String url) {
         return new Get("cookies", url);
     }
 
+    /**
+     * Get a session storage item.
+     *
+     * @param key the key that specifies the item.
+     */
     public static Get sessionStorageItem(String key) {
         return new Get("sessionStorage", key);
     }
 
+    /**
+     * Get a local storage item.
+     *
+     * @param key the key that specifies the item.
+     */
     public static Get localStorageItem(String key) {
         return new Get("localStorage", key);
     }

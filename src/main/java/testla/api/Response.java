@@ -2,6 +2,9 @@ package testla.api;
 
 import java.util.Map;
 
+/**
+ * Response type which is returned from any request
+ */
 public class Response {
     public Object body;
     public int status;

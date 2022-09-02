@@ -6,9 +6,7 @@ import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * TODO: Add Description
- *
- * @author Patrick Döring
+ * Utility functions used to deal with subselectors and advanced selector options.
  */
 public class Utils {
     private Locator getPageLocator(Page page, String selector, @Nullable String hasText) {
@@ -31,7 +29,7 @@ public class Utils {
         locator.waitFor(new WaitForOptions().setTimeout(timeout == null ? 0.0 : timeout));
     }
 
-    // ToDo: Add SubSelector
+    // ToDo: Add SubSelector ??
     public Locator recursiveLocatorLookup(Page page, String selector, SelectorOptions options) {
         // Find first Level Locator!!!
         Locator locator = getPageLocator(page, selector, options.hasText);
@@ -45,7 +43,6 @@ public class Utils {
     }
 
     private Locator subLocatorLookup(Page page, Locator locator, @Nullable Double timeout, SubSelector subSelector) {
-
         Locator resolvedLocator = locator;
         waitForLocator(resolvedLocator, timeout);
 
