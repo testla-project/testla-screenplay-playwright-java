@@ -1,10 +1,10 @@
 package testla.api.actions;
 
 import com.microsoft.playwright.options.RequestOptions;
-import testla.screenplay.actor.IActor;
 import testla.api.RequestMethod;
 import testla.api.ResponseBodyFormat;
 import testla.api.abilities.UseAPI;
+import testla.screenplay.actor.IActor;
 
 import java.util.Map;
 

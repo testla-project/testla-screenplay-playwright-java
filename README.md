@@ -21,739 +21,699 @@ Initializes the Ability by passing a Playwright Page object.
 
 Use the Ability as an Actor. Required by Actions to get access to the ability functions. Examples can be found below.
 
-#### addCookies(cookies: Cookie[])
+#### addCookies(List<Cookie> cookies)
 
 Add cookies into this browser context. All pages within this context will have these cookies installed. Cookies can be obtained via BrowseTheWeb.getCookies([urls]).
 
-```js
-BrowseTheWeb.as(actor).addCookies([{
-    name: 'my cookie',
-    value: 'my value',
-    url: 'http://www.myapp.com',
-}]);
+```java
+BrowseTheWeb.as(actor).addCookies(Arrays.asList(cookieObject1, cookieObject2));
 ```
 
-#### checkBox(selector: string, options?: SelectorOptions)
+#### checkBox(String selector, SelectorOptions options)
 
 Check the specified checkbox.
 
-```js
+```java
 // simple call with just selector
-BrowseTheWeb.as(actor).checkBox('mySelector');
+BrowseTheWeb.as(actor).checkBox("mySelector");
 // or with options
-BrowseTheWeb.as(actor).checkBox('mySelector', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+BrowseTheWeb.as(actor).checkBox("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
 #### clearCookies()
 
 Clear the browser context cookies.
 
-```js
+```java
 BrowseTheWeb.as(actor).clearCookies();
 ```
 
-#### click(selector: string, options?: SelectorOptions)
+#### click(String selector, SelectorOptions options)
 
 Click the element specified by the selector.
 
-```js
+```java
 // simple call with just selector
-BrowseTheWeb.as(actor).click('mySelector');
+BrowseTheWeb.as(actor).click("mySelector");
 // or with options
-BrowseTheWeb.as(actor).click('mySelector', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+BrowseTheWeb.as(actor).click("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
-#### dblclick(selector: string, options?: SelectorOptions)
+#### dblclick(String selector, SelectorOptions options)
 
 Double Click the element specified by the selector.
 
-```js
+```java
 // simple call with just selector
-BrowseTheWeb.as(actor).dblclick('mySelector');
+BrowseTheWeb.as(actor).dblclick("mySelector");
 // or with options
-BrowseTheWeb.as(actor).dblclick('mySelector', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+BrowseTheWeb.as(actor).dblclick("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
-#### dragAndDrop(sourceSelector: string, targetSelector: string, options?: { source?: SelectorOptions, target?: SelectorOptions })
+#### dragAndDrop(String sourceSelector, String targetSelector, SelectorOptions sourceOptions, SelectorOptions targetOptions)
 
 Drag the specified source element to the specified target element and drop it.
 
-```js
+```java
 // simple call with just source and target selector
-BrowseTheWeb.as(actor).dragAndDrop('sourceSelector', 'targetSelector');
+BrowseTheWeb.as(actor).dragAndDrop("sourceSelector", "targetSelector");
 // or with options
-BrowseTheWeb.as(actor).dragAndDrop('sourceSelector', 'targetSelector', {
-    source: { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]},
-    target: { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]}
-});
+BrowseTheWeb.as(actor).dragAndDrop("sourceSelector", "targetSelector",
+    new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)),
+    new SelectorOptions("myText", null, new SubSelector("mySubSelector", null))
+);
 ```
 
-#### fill(selector: string, input: string, options?: SelectorOptions)
+#### fill(String selector, String input, SelectorOptions options)
 
 Fill the element specified by the selector with the given input.
 
-```js
+```java
 // simple call with just selector and input value
-BrowseTheWeb.as(actor).fill('mySelector', 'myInput');
+BrowseTheWeb.as(actor).fill("mySelector", "myInput");
 // or with options
-BrowseTheWeb.as(actor).fill('mySelector', 'myInput', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+BrowseTheWeb.as(actor).fill("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
-#### getCookies(urls?: string | string[])
+#### getCookies(String urls)
 
 Get the cookies of the current browser context. If no URLs are specified, this method returns all cookies. If URLs are specified, only cookies that affect those URLs are returned.
 
-```js
+```java
 // get all cookies
 BrowseTheWeb.as(actor).getCookies();
 // get cookies for one single domain
-BrowseTheWeb.as(actor).getCookies('https:www.myapp.com');
-// get cookies for two domains
-BrowseTheWeb.as(actor).getCookies(['https:www.myapp.com', 'https:www.another-app.com']);
+BrowseTheWeb.as(actor).getCookies("https:www.myapp.com");
+// get cookies for multiple domains
+BrowseTheWeb.as(actor).getCookies(Arrays.asList("https:www.myapp.com", "https:www.another-app.com"));
 ```
 
-#### getLocalStorageItem(key: string)
+#### getLocalStorageItem(String key)
 
 Get a local storage item specified by the given key.
 
-```js
-BrowseTheWeb.as(actor).getLocalStorageItem('some key');
+```java
+BrowseTheWeb.as(actor).getLocalStorageItem("some key");
 ```
 
-#### getSessionStorageItem(key: string)
+#### getSessionStorageItem(String key)
 
 Get a session storage item specified by given key.
 
-```js
-BrowseTheWeb.as(actor).getSessionStorageItem('some key');
+```java
+BrowseTheWeb.as(actor).getSessionStorageItem("some key");
 ```
 
-#### goto(url: string)
+#### navigate(String url)
 
 Use the page to navigate to the specified url.
 
-```js
-BrowseTheWeb.as(actor).goto('myURL');
+```java
+BrowseTheWeb.as(actor).navigate("myURL");
 ```
 
-#### hover(selector: string, options?: SelectorOptions & { modifiers?: ('Alt' | 'Control' | 'Meta' | 'Shift')[] })
+#### hover(String selector, SelectorOptions options, List<KeyboardModifier> modifiers)
 
 Use the page mouse to hover over the specified element.
 
-```js
+```java
 // simple call with just selector
-BrowseTheWeb.as(actor).hover('mySelector');
+BrowseTheWeb.as(actor).hover("mySelector");
 // or with options
-BrowseTheWeb.as(actor).hover('mySelector', {
-    hasText: 'myText',
-    subSelector: ['mySubSelector', { hasText: 'anotherText' } ]
-    modifiers: ['Alt', 'Shift']
-});
+BrowseTheWeb.as(actor).hover("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)), Arrays.asList("Alt", "Shift"));
 ```
 
-#### checkEnabledState(selector: string, mode: 'enabled' | 'disabled', options?: SelectorOptions, timeout?: number)
+#### checkEnabledState(String selector, String mode, SelectorOptions options)
 
 Verify if a locator on the page is enabled or disabled.
 
-```js
+```java
 // simple call with just selector
-BrowseTheWeb.as(actor).checkEnabledState('mySelector', 'enabled');
+BrowseTheWeb.as(actor).checkEnabledState("mySelector", 'enabled");
 // or with options
-BrowseTheWeb.as(actor).checkEnabledState('mySelector', 'disabled', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+BrowseTheWeb.as(actor).checkEnabledState("mySelector", 'disabled', new SelectorOptions("myText", 10.0, new SubSelector("mySubSelector", null)));
 ```
 
-#### checkVisibilityState(selector: string, mode: 'visible' | 'hidden', options?: SelectorOptions, timeout?: number)
+#### checkVisibilityState(String selector, String mode, SelectorOptions options)
 
 Verify if a locator on the page is visible.
 
-```js
+```java
 // simple call with just selector
-BrowseTheWeb.as(actor).checkVisibilityState('mySelector', 'visible');
+BrowseTheWeb.as(actor).checkVisibilityState("mySelector", 'visible");
 // or with options
-BrowseTheWeb.as(actor).checkVisibilityState('mySelector', 'hidden', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+BrowseTheWeb.as(actor).checkVisibilityState("mySelector", 'hidden', new SelectorOptions("myText", 10.0, new SubSelector("mySubSelector", null)));
 ```
 
-#### press(keys: string)
+#### press(String keys)
 
 Press the specified key(s) on the keyboard.
 
-```js
+```java
 // Press a single button
-BrowseTheWeb.as(actor).press('A');
+BrowseTheWeb.as(actor).press("A");
 // or multiple buttons
-BrowseTheWeb.as(actor).press('Control+A');
+BrowseTheWeb.as(actor).press("Control+A");
 ```
 
-#### removeLocalStorageItem(key: string)
+#### removeLocalStorageItem(String key)
 
 Delete a local storage item, if a key/value pair with the given key exists.
 
-```js
-BrowseTheWeb.as(actor).removeLocalStorageItem('some key');
+```java
+BrowseTheWeb.as(actor).removeLocalStorageItem("some key");
 ```
 
-#### removeSessionStorageItem(key: string)
+#### removeSessionStorageItem(String key)
 
 Delete a session storage item, if a key/value pair with the given key exists.
 
-```js
-BrowseTheWeb.as(actor).removeSessionStorageItem('some key');
+```java
+BrowseTheWeb.as(actor).removeSessionStorageItem("some key");
 ```
 
-#### setLocalStorageItem(key: string, value: any)
+#### setLocalStorageItem(String key, Object any)
 
 Set a local storage item identified by the given key + value, creating a new key/value pair if none existed for key previously.
 
-```js
-BrowseTheWeb.as(actor).setLocalStorageItem('some key', 'some value');
+```java
+BrowseTheWeb.as(actor).setLocalStorageItem("some key", 'some value");
 ```
 
-#### setSessionStorageItem(key: string, value: any)
+#### setSessionStorageItem(String key, Object any)
 
 Set a session storage item identified by the given key + value, creating a new key/value pair if none existed for key previously.
 
-```js
-BrowseTheWeb.as(actor).setSessionStorageItem('some key', 'some value');
+```java
+BrowseTheWeb.as(actor).setSessionStorageItem("some key", 'some value");
 ```
 
-#### type(selector: string, input: string, options?: SelectorOptions)
+#### type(String selector, String input, SelectorOptions options)
 
 Type the given input into the element specified by the selector.
 
-```js
+```java
 // simple call with just selector and input value
-BrowseTheWeb.as(actor).type('mySelector', 'myInput');
+BrowseTheWeb.as(actor).type("mySelector", "myInput");
 // or with options
-BrowseTheWeb.as(actor).type('mySelector', 'myInput', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+BrowseTheWeb.as(actor).type("mySelector", "myInput", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
-#### waitForLoadState(status: 'load' | 'domcontentloaded' | 'networkidle')
+#### waitForLoadState(LoadState status)
 
 Wait for the specified loading state.
 
-```js
-BrowseTheWeb.as(actor).waitForLoadState('networkidle');
+```java
+BrowseTheWeb.as(actor).waitForLoadState("networkidle");
 ```
 
-#### waitForSelector(selector: string, options?: SelectorOptions)
+#### waitForSelector(String selector, SelectorOptions options)
 
 Wait until the element of the specified selector exists.
 
-```js
+```java
 // simple call with just selector
-BrowseTheWeb.as(actor).waitForSelector('mySelector');
+BrowseTheWeb.as(actor).waitForSelector("mySelector");
 // or with options
-BrowseTheWeb.as(actor).waitForSelector('mySelector', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+BrowseTheWeb.as(actor).waitForSelector("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
 ### Web Actions
 
-#### Add.cookies(cookies: Cookie[])
+#### Add.cookies(List<Cookie> cookies)
 
 Add the specified cookies.
 
-```js
-Add.cookies([{
-    name: 'my cookie',
-    value: 'my value',
-    url: 'http://www.myapp.com',
-}]);
+```java
+Add.cookies(Arrays.asList(cookieObject1, cookieObject2));
 ```
 
-#### Check.element(selector: string, options?: SelectorOptions)
+#### Check.element(String selector, SelectorOptions options)
 
 Checks a checkbox
 
-```js
+```java
 // simple call with just selector
-Check.element('mySelector');
+Check.element("mySelector");
 // or with options
-Check.element('mySelector', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+Check.element("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 #### Clear.cookies()
 
 Clear all browser cookies.
 
-```js
+```java
 Clear.cookies();
 ```
 
-#### Click.on(selector: string, options?: SelectorOptions)
+#### Click.on(String selector, SelectorOptions options)
 
 Click an element
 
-```js
+```java
 // simple call with just selector
-Click.on('mySelector');
+Click.on("mySelector");
 // or with options
-Click.on('mySelector', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+Click.on("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
-#### DoubleClick.on(selector: string, options?: SelectorOptions)
+#### DoubleClick.on(String selector, SelectorOptions options)
 
 Doubleclick an element
 
-```js
+```java
 // simple call with just selector
-DoubleClick.on('mySelector');
+DoubleClick.on("mySelector");
 // or with options
-DoubleClick.on('mySelector', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+DoubleClick.on("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
-#### DragAndDrop.execute(sourceSelector: string, targetSelector: string, options?: { source?: SelectorOptions, target?: SelectorOptions })
+#### DragAndDrop.execute(String sourceSelector, String targetSelector, SelectorOptions sourceOptions, SelectorOptions targetOptions)
 
 Drag an element specified by the source selector and drop it at the target selector
 
-```js
+```java
 // simple call with just selector
-DragAndDrop.execute('sourceSelector', 'targetSelector');
+DragAndDrop.execute("sourceSelector", "targetSelector");
 // or with options
-DragAndDrop.execute('sourceSelector', 'targetSelector', {
-    source: { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]},
-    target: { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]}
-});
+DragAndDrop.execute("sourceSelector", "targetSelector", 
+    new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)),
+    new SelectorOptions("myText", null, new SubSelector("mySubSelector", null))
+);
 ```
 
-#### Fill.in(selector: string, value: string, options?: SelectorOptions)
+#### Fill.in(String selector, String value, SelectorOptions options)
 
 Fill a given string into an input element
 
-```js
+```java
 // simple call with just selector
-Fill.in('mySelector', 'myInput');
+Fill.in("mySelector", "myInput");
 // or with options
-Fill.in('mySelector', 'myInput', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+Fill.in("mySelector", "myInput", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
-#### Get.cookies(urls?: string | string[])
+#### Get.cookies(String url)
 
 Get the specified cookies. If no urls are speciefied, get all cookies.
 
-```js
+```java
 // get all cookies
 Get.cookies();
 // get cookies for a single domain
-Get.cookies('https://www.myapp.com');
-// get cookies for two domains
-Get.cookies(['https://www.myapp.com', 'https://www.another-app.com']);
+Get.cookies("https://www.myapp.com");
+// get cookies for multiple domains
+Get.cookies(Arrays.asList("https://www.myapp.com", "https://www.another-app.com"));
 ```
 
-#### Get.localStorageItem(key: string)
+#### Get.localStorageItem(String key)
 
 Get a local storage item.
 
-```js
-Get.localStorageItem('some key');
+```java
+Get.localStorageItem("some key");
 ```
 
-#### Get.sessionStorageItem(key: string)
+#### Get.sessionStorageItem(String key)
 
 Get a session storage item.
 
-```js
-Get.sessionStorageItem('some key');
+```java
+Get.sessionStorageItem("some key");
 ```
 
-#### Hover.over(selector: string, options?: SelectorOptions & { modifiers?: ('Alt' | 'Control' | 'Meta' | 'Shift')[] })
+#### Hover.over(String selector, SelectorOptions options, List<KeyboardModifiers> modifiers)
 
 Hover an element
 
-```js
+```java
 // simple call with just selector
-Hover.over('mySelector');
+Hover.over("mySelector");
 // or with options
-Hover.over('mySelector', {
-    hasText: 'myText',
-    subSelector: ['mySubSelector', { hasText: 'anotherText' } ]
-    modifiers: ['Alt', 'Shift']
-}); 
+Hover.over("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)), Arrays.asList("Alt", "Shift")); 
 ```
 
-#### Press.key(keys: string)
+#### Press.key(String keys)
 
 Press key(s) on the keyboard
 
-```js
+```java
 // single key
-Press.key('A');
+Press.key("A");
 // multiple keys
-Press.key('Control+A')
+Press.key("Control+A")
 ```
 
-#### Navigate.to(url: string)
+#### Navigate.to(String url)
 
 Use the browser page to navigate to a specified url
 
-```js
-Navigate.to('myUrl');
+```java
+Navigate.to("myUrl");
 ```
 
-#### Remove.localStorageItem(key: string)
+#### Remove.localStorageItem(String key)
 
 Remove a local storage item, if a key/value pair with the given key exists.
 
-```js
-Remove.localStorageItem('some key');
+```java
+Remove.localStorageItem("some key");
 ```
 
-#### Remove.sessionStorageItem(key: string)
+#### Remove.sessionStorageItem(String key)
 
 Remove a session storage item, if a key/value pair with the given key exists.
 
-```js
-Remove.sessionStorageItem('some key');
+```java
+Remove.sessionStorageItem("some key");
 ```
 
-#### Set.localStorageItem(key: string, value: any)
+#### Set.localStorageItem(String key, Object any)
 
 Set a local storage item identified by the given key + value, creating a new key/value pair if none existed for key previously.
 
-```js
-Set.localStorageItem('some key', 'some value');
+```java
+Set.localStorageItem("some key", "some value");
 ```
 
-#### Set.sessionStorageItem(key: string, value: any)
+#### Set.sessionStorageItem(String key, Object any)
 
 Set a session storage item identified by the given key + value, creating a new key/value pair if none existed for key previously.
 
-```js
-Set.sessionStorageItem('some key', 'some value');
+```java
+Set.sessionStorageItem("some key", "some value");
 ```
 
-#### Type.in(selector: string, value: string, options?: SelectorOptions)
+#### Type.in(String selector, String value, SelectorOptions options)
 
 Type a given string into an input element
 
-```js
+```java
 // simple call with just selector
-Type.in('mySelector', 'myInput');
+Type.in("mySelector", "myInput");
 // or with options
-Type.in('mySelector', 'myInput', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+Type.in("mySelector", "myInput", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
-#### Wait.forLoadState(state: 'load' | 'domcontentloaded' | 'networkidle')
+#### Wait.forLoadState(LoadState status)
 
 Wait for a load state to be present
 
-```js
-Wait.forLoadState(state: 'load' | 'domcontentloaded' | 'networkidle');
+```java
+Wait.forLoadState("networkidle");
 ```
 
-#### Wait.forSelector(selector: string, value: string, options?: SelectorOptions)
+#### Wait.forSelector(String selector, SelectorOptions options)
 
 Wait for an element to be present
 
-```js
+```java
 // simple call with just selector
-Wait.forSelector('mySelector');
+Wait.forSelector("mySelector");
 // or with options
-Wait.forSelector('mySelector', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+Wait.forSelector("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
 ### UseAPI Ability
 
 This ability enables the actor to interact with APIs by sending http requests.
 
-#### as(actor: Actor)
+#### as(Actor actor)
 
 Use the Ability as an Actor. Used by Actions to get access to the ability functions. Examples can be found below.
 
-#### using(requestContext: APIRequestContext)
+#### using(APIRequestContext requestContext)
 
 Initialize this Ability by passing an already existing Playwright APIRequestContext object.
 
-#### sendRequest(method: RequestMethod, url: string, headers?: any, responseFormat?: ResponseBodyFormat, data?: any)
+#### sendRequest(RequestMethod method, String url, RequestOptions options, ResponseBodyFormat responseBodyFormat)
 
 Send a request (GET, POST, PATCH, PUT, HEAD or DELETE) to the specified url. Headers, a desired format for the response's body and data can also be sent.
 
-```js
-UseApi.as(actor).sendRequest(REQUEST_METHOD.POST, '/items', { authorization: 'Bearer dfh.dasgeq65qg.eyjkhf' }, 'json', { title: 'new item' });
+```java
+UseApi.as(actor).sendRequest(
+    RequestMethod.POST, "/items", 
+    RequestOptions.create().
+        setData("{ authorization: 'Bearer dfh.dasgeq65qg.eyjkhf' }").
+        withHeaders(Map.of("title", "myHeader")), 
+    ResponseBodyFormat.JSON
+);
 ```
 
-#### checkStatus(response: Response, status: number, mode: 'equal' | 'unequal')
+#### checkStatus(Response response, int status, String mode)
 
 Verify if the given response's status is equal to the expected status.
 
-```js
-UseApi.as(actor).checkStatus(response, 200, 'equal');
+```java
+UseApi.as(actor).checkStatus(response, 200, "equal");
 ```
 
-#### checkBody(response: Response, body: ResponseBodyType, mode: 'equal' | 'unequal')
+#### checkBody(Response response, Object body, String mode)
 
 Verify if the given response's body is equal to the expected body. The check includes type safety.
 
-```js
+```java
 // json response
-UseApi.as(actor).checkBody(response, { text: 'test' }, 'equal');
+UseApi.as(actor).checkBody(response, "{ text: 'test' }", "equal");
 // text response
-UseApi.as(actor).checkBody(response, 'test', 'unequal');
-// buffer response
-UseApi.as(actor).checkBody(response, Buffer.from('abc'), 'equal');
+UseApi.as(actor).checkBody(response, 'test', "unequal");
 ```
 
-#### checkHeaders(response: Response, headers: {[key: string]: string | undefined }, mode: 'included' | 'excluded')
+#### checkHeaders(Response response, Map<String, String> headers, String mode)
 
 Verify if the given headers are included in the given response's headers.
 If the header has a value !== undefined, both key and value will be checked. If a header has a value === undefined, only the key will be checked.
 
-```js
+```java
 // check only keys
-UseApi.as(actor).checkHeaders(response, { contentType: undefined }, 'included');
+UseApi.as(actor).checkHeaders(response, Map.of("contentType", null), "included");
 // check key and value
-UseApi.as(actor).checkHeaders(response, { contentType: 'application/json' }, 'excluded');
+UseApi.as(actor).checkHeaders(response, Map.of("contentType", "application/json"), "excluded");
 ```
 
-#### checkDuration(response: Response, duration: number, mode: 'lessOrEqual' | 'greater')
+#### checkDuration(Response response, Double duration, String mode)
 
 Verify if the reponse (including receiving body) was received within a given duration.
 
-```js
+```java
 // check if response was received within 2s
-UseApi.as(actor).checkDuration(response, 2000, 'lessOrEqual');
+UseApi.as(actor).checkDuration(response, 2000.0, "lessOrEqual");
 ```
 
 ### API Actions
 
-#### Delete.from(url: string)
+#### Delete.from(String url)
 
 Sends a DELETE request to the api. Optionally it is possible to chain definitions for headers and data as well as the expected response type.
 
-```js
+```java
 // simple request
-Delete.from('https://my-fancy-url.com');
+Delete.from("https://my-fancy-url.com");
 // with chained definitions
-Delete.from('https://my-fancy-url.com')
+Delete.from("https://my-fancy-url.com")
     // add headers
-    .withHeaders({
-        key: value,
-    })
+    .withHeaders(Map.of("key", "value"))
     // add data
-    .withData({
-        key: value,
-    })
+    .withData("{ key: value }")
     // define expected response format
-    .withResponseFormat('text');
+    .withResponseFormat(ResponseBodyFormat.TEXT);
 ```
 
-#### Get.from(url: string)
+#### Get.from(String url)
 
 Sends a GET request to the api. Optionally it is possible to chain definitions for headers as well as the expected response type.
 
-```js
+```java
 // simple request
-Get.from('https://my-fancy-url.com');
+Get.from("https://my-fancy-url.com");
 // with chained definitions
-Get.from('https://my-fancy-url.com')
+Get.from("https://my-fancy-url.com")
     // add headers
-    .withHeaders({
-        key: value,
-    })
+    .withHeaders(Map.of("key", "value"))
     // define expected response format
-    .withResponseFormat('text');
+    .withResponseFormat(ResponseBodyFormat.TEXT);
 ```
 
-#### Head.from(url: string)
+#### Head.from(String url)
 
 Sends a HEAD request to the api. Optionally it is possible to chain definitions for headers as well as the expected response type.
 
-```js
+```java
 // simple request
-Head.from('https://my-fancy-url.com');
+Head.from("https://my-fancy-url.com");
 // with chained definitions
-Head.from('https://my-fancy-url.com')
+Head.from("https://my-fancy-url.com")
     // add headers
-    .withHeaders({
-        key: value,
-    })
+    .withHeaders(Map.of("key", "value"))
     // define expected response format
-    .withResponseFormat('text');
+    .withResponseFormat(ResponseBodyFormat.TEXT)
 ```
 
-#### Patch.to(url: string)
+#### Patch.to(String url)
 
 Sends a PATCH request to the api. Optionally it is possible to chain definitions for header sand data as well as the expected response type.
 
-```js
+```java
 // simple request
-Patch.to('https://my-fancy-url.com');
+Patch.to("https://my-fancy-url.com");
 // with chained definitions
-Patch.to('https://my-fancy-url.com')
+Patch.to("https://my-fancy-url.com")
     // add headers
-    .withHeaders({
-        key: value,
-    })
+    .withHeaders(Map.of("key", "value"))
     // add data
-    .withData({
-        key: value,
-    })
+    .withData("{ key: value }")
     // define expected response format
-    .withResponseFormat('text');
+    .withResponseFormat(ResponseBodyFormat.TEXT)
 ```
 
-#### Post.to(url: string)
+#### Post.to(String url)
 
 Sends a POST request to the api. Optionally it is possible to chain definitions for header sand data as well as the expected response type.
 
-```js
+```java
 // simple request
-Post.to('https://my-fancy-url.com');
+Post.to("https://my-fancy-url.com");
 // with chained definitions
-Post.to('https://my-fancy-url.com')
+Post.to("https://my-fancy-url.com")
     // add headers
-    .withHeaders({
-        key: value,
-    })
+    .withHeaders(Map.of("key", "value"))
     // add data
-    .withData({
-        key: value,
-    })
+    .withData("{ key: value }")
     // define expected response format
-    .withResponseFormat('text');
+    .withResponseFormat(ResponseBodyFormat.TEXT)
 ```
 
-#### Put.to(url: string)
+#### Put.to(String url)
 
 Sends a Put request to the api. Optionally it is possible to chain definitions for header sand data as well as the expected response type.
 
-```js
+```java
 // simple request
-Put.to('https://my-fancy-url.com');
+Put.to("https://my-fancy-url.com");
 // with chained definitions
-Put.to('https://my-fancy-url.com')
+Put.to("https://my-fancy-url.com")
     // add headers
-    .withHeaders({
-        key: value,
-    })
+    .withHeaders(Map.of("key", "value"))
     // add data
-    .withData({
-        key: value,
-    })
+    .withData("{ key: value }")
     // define expected response format
-    .withResponseFormat('text');
+    .withResponseFormat(ResponseBodyFormat.TEXT)
 ```
 
 ### Generic Actions which do not require any particular Ability
 
-#### Sleep.for(ms: number)
+#### Sleep.for(Long ms)
 
 Pause the execution of further test steps for a given interval in milliseconds
 
-```js
+```java
 Sleep.for(5000);
 ```
 
 ### Available Web Questions
 
-#### Element.toBe
+#### Element.toBe()
 
 Checks if a condition is true.
 
-#### Element.notToBe
+#### Element.notToBe()
 
 Checks if a condition is false.
 
-#### Element.*.visible(selector: string, options?: SelectorOptions)
+#### Element.*.visible(String selector, SelectorOptions options)
 
 Validates wether an element is visible. A mode operator must be prepended.
 
-```js
+```java
 // simple call with just selector
-Element.toBe.visible('mySelector');
+Element.toBe().visible("mySelector");
 // or with options
-Element.notToBe.visible('mySelector', {
-    hasText: 'myText',
-    subSelector: ['mySubSelector', { hasText: 'anotherText' } ]
-});
+Element.notToBe().visible("mySelector", new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
-#### Element.*.enabled(selector: string, options?: SelectorOptions)
+#### Element.*.enabled(String selector, SelectorOptions options)
 
 Validates wether an element is enabled. A mode operator must be prepended.
 
-```js
+```java
 // simple call with just selector
-Element.toBe.enabled('mySelector');
+Element.toBe().enabled("mySelector");
 // or with options
-Element.notToBe.enabled('mySelector', { hasText: 'myText', subSelector: ['mySubSelector', { hasText: 'anotherText' } ]});
+Element.notToBe().enabled("mySelector",new SelectorOptions("myText", null, new SubSelector("mySubSelector", null)));
 ```
 
 ### Available Api Questions
 
-#### Response.has
+#### Response.has()
 
 Checks if a condition is true.
 
-#### Response.hasNot
+#### Response.hasNot()
 
 Checks if a condition is false.
 
-#### Response.*.statusCode(response: Response, code: number)
+#### Response.*.statusCode(Response response, code: number)
 
 Checks if the response has a given status code. A mode operator must be prepended.
 
-```js
-Response.has.statusCode(response, 200);
-Response.hasNot.statusCode(response, 200);
+```java
+Response.has().statusCode(response, 200);
+Response.hasNot().statusCode(response, 200);
 ```
 
-#### Response.*.body(response: Response, body: ResponseBodyType)
+#### Response.*.body(Response response, body: ResponseBodyType)
 
 Checks if the response body equals a given body. A mode operator must be prepended.
 
-```js
+```java
 // json format
-Response.has.body(response, { key: value });
+Response.has().body(response, { key: value });
 // text format
-Response.hasNot.body(response, 'text' );
-// buffer format
-Response.has.body(response, Buffer.from('abc') );
+Response.hasNot().body(response, "text");
 ```
 
-#### Response.*.headers(response: Response, headers: Headers)
+#### Response.*.headers(Response response, headers: Headers)
 
 Checks if the response has the given headers either by key (value to be set to undefined) or key/value lookup. A mode operator must be prepended.
 
-```js
+```java
 // only check for header presence by passing undefined as the value
-Response.has.headers(response, { 'content-type': undefined });
+Response.has().headers(response, Map.of("content-type", null));
 // lookup for key/value combination to be present
-Response.hasNot.headers(response, { 'content-type': 'application/json' });
+Response.hasNot().headers(response,Map.of("content-type", "application/json"));
 ```
 
-#### Response.*.beenReceivedWithin(response: Response, duration: number)
+#### Response.*.beenReceivedWithin(Response response, duration: number)
 
 Checks if the reponse (including receiving body) was received within a given duration. A mode operator must be prepended.
 
-```js
+```java
 // check if response was received within 2s
-Response.has.beenReceivedWithin(response, 2000);
+Response.has().beenReceivedWithin(response, 2000);
 // check if response was not received within 2s
-Response.hasNot.beenReceivedWithin(response, 2000);
+Response.hasNot().beenReceivedWithin(response, 2000);
 ```
 
 ### Group Actions into a Task
 
 Tasks group actions into logical entities. Here is a task that uses the actions Navigate, Fill and Click from the web capabilities and Get from api capabilities.
 
-```js
-// file: ./task/Login.ts
+```java
+// file: ./task/Login.java
 
-import { Actor, Task } from '@testla/screenplay-playwright';
-import { Click, Fill, Navigate } from '@testla/screenplay-playwright/web';
-import { Get} from '@testla/screenplay-playwright/api';
 
-export class Login extends Task {
-    public async performAs(actor: Actor): Promise<void> {
+public class Login extends Task {
+    public Object performAs(actor: Actor) {
         return actor.attemptsTo(
-            Navigate.to('https://www.my-fancy-url.com'),
-            Fill.with('#username', actor.states('username') || ''),
-            Fill.with('#password', actor.states('password') || ''),
-            Click.on('#login-button'),
-            Get.from('https://www.my-fancy-url.com')
+            Navigate.to("https://www.my-fancy-url.com"),
+            Fill.with("#username", actor.states("username")),
+            Fill.with("#password", actor.states("password")),
+            Click.on("#login-button"),
+            Get.from("https://www.my-fancy-url.com")
         );
     }
 
-    public static toApp(): Login {
+    public static Login toApp() {
         return new Login();
     }
 }
@@ -763,10 +723,10 @@ export class Login extends Task {
 
 Initialize an actor with abilities for later use in a test case.
 
-```js
-const actor = Actor.named('James')
-            .with('username', 'John Doe')
-            .with('password', 'MySecretPassword');
+```java
+Actor actor = Actor.named("James")
+            .with("username', 'John Doe")
+            .with("password', 'MySecretPassword");
             .can(BrowseTheWeb.using(page))
             .can(UseAPI.using(request));
 ``` 
@@ -775,27 +735,23 @@ const actor = Actor.named('James')
 
 The final step is to define a test case using the Task defined above.
 
-```js
-import { Actor } from '@testla/screenplay-playwright';
-import { BrowseTheWeb, Element } from '@testla/screenplay-playwright/web';
-import { Login } from './task/Login';
+```java
 
 // Example test case with Playwright
-test.describe('My Test', () => {
-    test('My first test', async ({ page, request }) => {
-        const actor = Actor.named('James')
-            .with('username', 'John Doe')
-            .with('password', 'MySecretPassword');
+public void test() {
+
+    Actor actor = Actor.named("James")
+            .with("username', 'John Doe")
+            .with("password', 'MySecretPassword");
             .can(BrowseTheWeb.using(page))
             .can(UseAPI.using(request));
 
-        // Execute the task Login - as defined further above
-        await actor.attemptsTo(Login.toApp());
+    // Execute the task Login - as defined further above
+    actor.attemptsTo(Login.toApp());
 
-        // Check if the login was successful - use the status question from the web package
-        await actor.asks(Element.toBe.visible('#logged-in-indicator'));
-    });
-});
+    // Check if the login was successful - use the status question from the web package
+    actor.asks(Element.toBe().visible("#logged-in-indicator"));
+}
 ```
 
 Besides the existing actions, abilities and questions it is of course possible to define your own ones. How this is done, please refer to our [core package](https://www.npmjs.com/package/@testla/screenplay).
