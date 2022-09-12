@@ -14,6 +14,7 @@ import com.microsoft.playwright.options.KeyboardModifier;
 import com.microsoft.playwright.options.LoadState;
 import testla.screenplay.ability.Ability;
 import testla.screenplay.actor.IActor;
+import testla.web.Modes;
 import testla.web.SelectorOptions;
 import testla.web.Utils;
 
@@ -474,17 +475,16 @@ public class BrowseTheWeb extends Ability {
      * @returns true if the element is enabled/disabled as expected, false if the timeout was reached.
      */
     // ToDo: Use Enum instead of string mode
-    public boolean checkEnabledState(String selector, String mode, SelectorOptions options) {
-        if (mode.equals("enabled")) {
-            assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
-                    .isEnabled(new IsEnabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
-        } else if (mode.equals("disabled")) {
-            assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
-                    .isDisabled(new IsDisabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
-        } else {
-            throw new RuntimeException("Unknown mode: " + mode);
+    public boolean checkEnabledState(String selector, Modes mode, SelectorOptions options) {
+        switch (mode) {
+            case ENABLED ->
+                assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+                        .isEnabled(new IsEnabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            case DISABLED ->
+                assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+                        .isDisabled(new IsDisabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            default -> throw new RuntimeException("Unknown mode for checkEnabledState(): " + mode);
         }
-
         return true;
     }
 }
