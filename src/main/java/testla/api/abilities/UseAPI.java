@@ -3,6 +3,7 @@ package testla.api.abilities;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
+import testla.api.Modes;
 import testla.api.RequestMethod;
 import testla.api.Response;
 import testla.api.ResponseBodyFormat;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This class represents the actor's ability to send API requests.
@@ -70,46 +71,25 @@ public class UseAPI extends Ability {
     public Response sendRequest(RequestMethod method, String url, RequestOptions options, ResponseBodyFormat responseBodyFormat) {
         long start = System.currentTimeMillis();
 
-        APIResponse res;
-        switch(method) {
-            case GET -> {
-                res = this.requestContext.get(url, options);
-            }
-            case POST -> {
-                res = this.requestContext.post(url, options);
-            }
-            case PATCH -> {
-                res = this.requestContext.patch(url, options);
-            }
-            case PUT -> {
-                res = this.requestContext.put(url, options);
-            }
-            case HEAD -> {
-                res = this.requestContext.head(url, options);
-            }
-            case DELETE -> {
-                res = this.requestContext.delete(url, options);
-            }
-            default -> throw new RuntimeException("Error: unknown RequestMethod!");
-        }
+        APIResponse res = switch(method) {
+            case GET        -> this.requestContext.get(url, options);
+            case POST       -> this.requestContext.post(url, options);
+            case PATCH      -> this.requestContext.patch(url, options);
+            case PUT        -> this.requestContext.put(url, options);
+            case HEAD       -> this.requestContext.head(url, options);
+            case DELETE     -> this.requestContext.delete(url, options);
+        };
 
         long end = System.currentTimeMillis();
 
-        Object resBody;
-        switch (responseBodyFormat) {
-            case TEXT -> {
-                resBody = res.text();
-            }
-            case BUFFER -> {
-                resBody = res.body();
-            }
-            case NONE -> {
-                resBody = null;
-            }
+        Object resBody = switch (responseBodyFormat) {
+            case TEXT       -> res.text();
+            case BUFFER     -> res.body();
+            case NONE       -> null;
             // case JSON -> no res.json() ?
             // ToDo: Validate if Byte Array can be converted to JSON
-            default -> resBody = res.text();
-        }
+            default         -> res.text();
+        };
 
         return new Response(resBody, res.status(), res.headers(), end-start);
     }
@@ -122,10 +102,13 @@ public class UseAPI extends Ability {
      * @param status the status to check.
      * @returns true if the status is equal/unequal as expected.
      */
-    // ToDo: Mode as Enum
-    public boolean checkStatus(Response response, int status, String mode) {
-        // ToDo: TEST IT!
-        assertEquals(response.status == status, mode.equals("equal"));
+    public boolean checkStatus(Response response, int status, Modes mode) {
+        switch (mode) {
+            case EQUAL      -> assertEquals(response.status, status);
+            case UNEQUAL    -> assertNotEquals(response.status, status);
+            default         -> throw new RuntimeException("Wrong mode for checkStatus(): " + mode +
+                                " Please use EQUAL or UNEQUAL.");
+        }
         return true;
     }
 
@@ -137,9 +120,13 @@ public class UseAPI extends Ability {
      * @param body the body to check.
      * @returns true if the body equal/unequal as expected.
      */
-    // ToDo: Mode as Enum
-    public boolean checkBody(Response response, String body, String mode) {
-        assertEquals(response.body.toString().equals(body), mode.equals("equal"));
+    public boolean checkBody(Response response, String body, Modes mode) {
+        switch (mode) {
+            case EQUAL      -> assertEquals(response.body.toString(), body);
+            case UNEQUAL    -> assertNotEquals(response.body.toString(), body);
+            default         -> throw new RuntimeException("Wrong mode for checkBody(): " + mode +
+                    " Please use EQUAL or UNEQUAL.");
+        }
         return true;
     }
 
@@ -151,7 +138,7 @@ public class UseAPI extends Ability {
      * @param body the body to check.
      * @returns true if the body equal/unequal as expected.
      */
-    public boolean checkBody(Response response, Object body, String mode) {
+    public boolean checkBody(Response response, Object body, Modes mode) {
         //ToDo: Use JsonMapper Jackson
         return true;
     }
@@ -164,16 +151,21 @@ public class UseAPI extends Ability {
      * @param body the body to check.
      * @returns true if the body equal/unequal as expected.
      */
-    public boolean checkBody(Response response, byte[] body, String mode) {
+    public boolean checkBody(Response response, byte[] body, Modes mode) {
         // copied from https://stackoverflow.com/questions/2836646/java-serializable-object-to-byte-array
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              ObjectOutputStream out = new ObjectOutputStream(bos)) {
             out.writeObject(response.body);
-            assertEquals(bos.toByteArray() == body, mode.equals("equal"));
+
+            switch (mode) {
+                case EQUAL      -> assertEquals(bos.toByteArray(), body);
+                case UNEQUAL    -> assertNotEquals(bos.toByteArray(), body);
+                default         -> throw new RuntimeException("Wrong mode for checkBody(): " + mode +
+                        " Please use EQUAL or UNEQUAL.");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return true;
     }
 
@@ -185,9 +177,14 @@ public class UseAPI extends Ability {
      * @param headers the headers to check.
      * @returns true if the headers are is included/excluded as expected.
      */
-    public boolean checkHeaders(Response response, Map<String, String> headers, String mode) {
+    public boolean checkHeaders(Response response, Map<String, String> headers, Modes mode) {
         // headers should be subset of response.headers
-        assertEquals(response.headers.entrySet().containsAll(headers.entrySet()), mode.equals("included"));
+        switch (mode) {
+            case INCLUDED   -> assertTrue(response.headers.entrySet().containsAll(headers.entrySet()));
+            case EXCLUDED   -> assertFalse(response.headers.entrySet().containsAll(headers.entrySet()));
+            default         -> throw new RuntimeException("Wrong mode for checkHeaders(): " + mode +
+                    " Please use INCLUDED or EXCLUDED.");
+        }
         return true;
     }
 
@@ -199,8 +196,13 @@ public class UseAPI extends Ability {
      * @param duration expected duration (in milliseconds) not to be exceeded
      * @returns true if response was received within given duration, false otherwise
      */
-    public boolean checkDuration(Response response, long duration, String mode) {
-        assertEquals(response.duration <= duration, mode.equals("lessOrEqual"));
+    public boolean checkDuration(Response response, long duration, Modes mode) {
+        switch (mode) {
+            case LESS_OR_EQUAL  -> assertTrue(response.duration <= duration);
+            case GREATER_THAN   -> assertFalse(response.duration <= duration);
+            default         -> throw new RuntimeException("Wrong mode for checkHeaders(): " + mode +
+                    " Please use LESS_OR_EQUAL or GREATER_THAN.");
+        }
         return true;
     }
 }

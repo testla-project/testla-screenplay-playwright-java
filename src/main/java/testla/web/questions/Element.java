@@ -2,6 +2,7 @@ package testla.web.questions;
 
 import testla.screenplay.actor.IActor;
 import testla.screenplay.question.Question;
+import testla.web.Modes;
 import testla.web.SelectorOptions;
 import testla.web.abilities.BrowseTheWeb;
 
@@ -11,7 +12,7 @@ import testla.web.abilities.BrowseTheWeb;
 public class Element extends Question<Boolean> {
 
     private final String checkMode;
-    private String mode;
+    private Modes mode;
     private String selector;
     private SelectorOptions options;
 
@@ -39,7 +40,7 @@ public class Element extends Question<Boolean> {
      * @param selector the selector
      */
     public Element visible(String selector) {
-        this.mode = "visible";
+        this.mode = Modes.VISIBLE;
         this.selector = selector;
         this.options = null;
         return this;
@@ -52,7 +53,7 @@ public class Element extends Question<Boolean> {
      * @param options advanced selector lookup options.
      */
     public Element visible(String selector, SelectorOptions options) {
-        this.mode = "visible";
+        this.mode = Modes.VISIBLE;
         this.selector = selector;
         this.options = options;
         return this;
@@ -64,7 +65,7 @@ public class Element extends Question<Boolean> {
      * @param selector the selector
      */
     public Element enabled(String selector) {
-        this.mode = "enabled";
+        this.mode = Modes.ENABLED;
         this.selector = selector;
         this.options = null;
         return this;
@@ -77,7 +78,7 @@ public class Element extends Question<Boolean> {
      * @param options advanced selector lookup options.
      */
     public Element enabled(String selector, SelectorOptions options) {
-        this.mode = "enabled";
+        this.mode = Modes.ENABLED;
         this.selector = selector;
         this.options = options;
         return this;
@@ -86,21 +87,21 @@ public class Element extends Question<Boolean> {
     @Override
     public Boolean answeredBy(IActor actor) {
         switch (this.mode) {
-            case "visible" -> {
+            case VISIBLE -> {
                 if (options == null) {
-                    return BrowseTheWeb.as(actor).checkVisibilityState(this.selector, this.checkMode.equals("toBe") ? "visible" : "hidden");
+                    return BrowseTheWeb.as(actor).checkVisibilityState(this.selector, this.checkMode.equals("toBe") ? Modes.VISIBLE : Modes.HIDDEN);
                 } else {
-                    return BrowseTheWeb.as(actor).checkVisibilityState(this.selector, this.checkMode.equals("toBe") ? "visible" : "hidden", this.options);
+                    return BrowseTheWeb.as(actor).checkVisibilityState(this.selector, this.checkMode.equals("toBe") ? Modes.VISIBLE : Modes.HIDDEN, this.options);
                 }
             }
-            case "enabled" -> {
+            case ENABLED -> {
                 if (options == null) {
-                    return BrowseTheWeb.as(actor).checkEnabledState(this.selector, this.checkMode.equals("toBe") ? "enabled" : "disabled");
+                    return BrowseTheWeb.as(actor).checkEnabledState(this.selector, this.checkMode.equals("toBe") ? Modes.ENABLED : Modes.DISABLED);
                 } else {
-                    return BrowseTheWeb.as(actor).checkVisibilityState(this.selector, this.checkMode.equals("toBe") ? "enabled" : "disabled", this.options);
+                    return BrowseTheWeb.as(actor).checkVisibilityState(this.selector, this.checkMode.equals("toBe") ? Modes.ENABLED : Modes.DISABLED, this.options);
                 }
             }
-            default -> throw new RuntimeException("Unknown mode: Element.answeredBy()!");
+            default -> throw new RuntimeException("Unknown mode for Element.answeredBy(): " + mode);
         }
     }
 }

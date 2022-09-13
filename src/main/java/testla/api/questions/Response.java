@@ -1,5 +1,6 @@
 package testla.api.questions;
 
+import testla.api.Modes;
 import testla.api.abilities.UseAPI;
 import testla.screenplay.actor.IActor;
 import testla.screenplay.question.Question;
@@ -132,24 +133,24 @@ public class Response extends Question<Boolean> {
     public Boolean answeredBy(IActor actor) {
         switch (this.mode) {
             case "status" -> {
-                return UseAPI.as(actor).checkStatus(this.response, ((int) this.payload), this.checkMode.equals("has") ? "equal" : "unequal");
+                return UseAPI.as(actor).checkStatus(this.response, ((int) this.payload), this.checkMode.equals("has") ? Modes.EQUAL : Modes.UNEQUAL);
             }
             case "body" -> {
                 if(this.oldType == String.class) {
-                    return UseAPI.as(actor).checkBody(this.response, ((String) this.payload), this.checkMode.equals("has") ? "equal" : "unequal");
+                    return UseAPI.as(actor).checkBody(this.response, ((String) this.payload), this.checkMode.equals("has") ? Modes.EQUAL : Modes.UNEQUAL);
                 }
                 if(this.oldType == Object.class) {
-                    return UseAPI.as(actor).checkBody(this.response, this.payload, this.checkMode.equals("has") ? "equal" : "unequal");
+                    return UseAPI.as(actor).checkBody(this.response, this.payload, this.checkMode.equals("has") ? Modes.EQUAL : Modes.UNEQUAL);
                 }
                 if(this.oldType == byte.class) {
-                    return UseAPI.as(actor).checkBody(this.response, ((byte[]) this.payload), this.checkMode.equals("has") ? "equal" : "unequal");
+                    return UseAPI.as(actor).checkBody(this.response, ((byte[]) this.payload), this.checkMode.equals("has") ? Modes.EQUAL : Modes.UNEQUAL);
                 }
             }
             case "headers" -> {
-                return UseAPI.as(actor).checkHeaders(this.response, ((Map<String, String>) this.payload), this.checkMode.equals("has") ? "equal" : "unequal");
+                return UseAPI.as(actor).checkHeaders(this.response, ((Map<String, String>) this.payload), this.checkMode.equals("has") ? Modes.EQUAL : Modes.UNEQUAL);
             }
             case "duration" -> {
-                return UseAPI.as(actor).checkDuration(this.response, ((long) this.payload), this.checkMode.equals("has") ? "lessOrEqual" : "greater");
+                return UseAPI.as(actor).checkDuration(this.response, ((long) this.payload), this.checkMode.equals("has") ? Modes.LESS_OR_EQUAL : Modes.GREATER_THAN);
             }
             default -> throw new RuntimeException("Error: Response.answeredBy(): unknown mode");
         }

@@ -136,12 +136,12 @@ public class BrowseTheWeb extends Ability {
      */
     public Object getLocalStorageItem(String key) {
         return this.page.evaluate("(key) => {"
-                + "const value = localStorage.getItem(key);"
-                + "if (value) {"
-                + "return Promise.resolve(JSON.parse(value));"
-                + "}"
-                + "return Promise.reject();"
-                + "}", key);
+            + "const value = localStorage.getItem(key);"
+            + "if (value) {"
+            + "return Promise.resolve(JSON.parse(value));"
+            + "}"
+            + "return Promise.reject();"
+            + "}", key);
     }
 
     /**
@@ -155,9 +155,9 @@ public class BrowseTheWeb extends Ability {
         args.put("key", key);
         args.put("value", value);
         this.page.evaluate("({ key, value }) => {"
-                + "localStorage.setItem(key, JSON.stringify(value));"
-                + "return Promise.resolve()"
-                + "}", args);
+            + "localStorage.setItem(key, JSON.stringify(value));"
+            + "return Promise.resolve()"
+            + "}", args);
     }
 
     /**
@@ -167,9 +167,9 @@ public class BrowseTheWeb extends Ability {
      */
     public void removeLocalStorageItem(String key) {
         this.page.evaluate("(key) => {"
-                + "localStorage.removeItem(key);"
-                + "return Promise.resolve();"
-                + "}", key);
+            + "localStorage.removeItem(key);"
+            + "return Promise.resolve();"
+            + "}", key);
     }
 
     /**
@@ -179,12 +179,12 @@ public class BrowseTheWeb extends Ability {
      */
     public Object getSessionStorageItem(String key) {
         return this.page.evaluate("(key) => {"
-                + "const value = sessionStorage.getItem(key);"
-                + "if (value) {"
-                + "return Promise.resolve(JSON.parse(value));"
-                + "}"
-                + "return Promise.reject();"
-                + "}", key);
+            + "const value = sessionStorage.getItem(key);"
+            + "if (value) {"
+            + "return Promise.resolve(JSON.parse(value));"
+            + "}"
+            + "return Promise.reject();"
+            + "}", key);
     }
 
     /**
@@ -198,9 +198,9 @@ public class BrowseTheWeb extends Ability {
         args.put("key", key);
         args.put("value", value);
         this.page.evaluate("({ key, value }) => {"
-                + "sessionStorage.setItem(key, JSON.stringify(value));"
-                + "return Promise.resolve()"
-                + "}", args);
+            + "sessionStorage.setItem(key, JSON.stringify(value));"
+            + "return Promise.resolve()"
+            + "}", args);
     }
 
     /**
@@ -210,9 +210,9 @@ public class BrowseTheWeb extends Ability {
      */
     public void removeSessionStorageItem(String key) {
         this.page.evaluate("(key) => {"
-                + "sessionStorage.removeItem(key);"
-                + "return Promise.resolve();"
-                + "}", key);
+            + "sessionStorage.removeItem(key);"
+            + "return Promise.resolve();"
+            + "}", key);
     }
 
     /**
@@ -410,16 +410,13 @@ public class BrowseTheWeb extends Ability {
      * @param selector the locator to search for.
      * @returns true if the element is visible/hidden as expected, false if the timeout was reached.
      */
-    // ToDo: Use Enum instead of string mode
-    public boolean checkVisibilityState(String selector, String mode) {
-        if (mode.equals("visible")) {
-            assertThat(this.page.locator(selector)).isVisible();
-        } else if (mode.equals("hidden")) {
-            assertThat(this.page.locator(selector)).isHidden();
-        } else {
-            throw new RuntimeException("Unknown mode: " + mode);
+    public boolean checkVisibilityState(String selector, Modes mode) {
+        switch (mode) {
+            case VISIBLE    -> assertThat(this.page.locator(selector)).isVisible();
+            case HIDDEN     -> assertThat(this.page.locator(selector)).isHidden();
+            default         -> throw new RuntimeException("Wrong mode for checkVisibilityState(): " + mode +
+                                    " Please use VISIBLE or HIDDEN.");
         }
-
         return true;
     }
 
@@ -431,18 +428,15 @@ public class BrowseTheWeb extends Ability {
      * @param options advanced selector lookup options.
      * @returns true if the element is visible/hidden as expected, false if the timeout was reached.
      */
-    // ToDo: Use Enum instead of string mode
-    public boolean checkVisibilityState(String selector, String mode, SelectorOptions options) {
-        if (mode.equals("visible")) {
-            assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
-                    .isVisible(new IsVisibleOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
-        } else if (mode.equals("hidden")) {
-            assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
-                    .isHidden(new IsHiddenOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
-        } else {
-            throw new RuntimeException("Unknown mode: " + mode);
+    public boolean checkVisibilityState(String selector, Modes mode, SelectorOptions options) {
+        switch (mode) {
+            case VISIBLE    -> assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+                                .isVisible(new IsVisibleOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            case HIDDEN     -> assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+                                .isHidden(new IsHiddenOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            default         -> throw new RuntimeException("Wrong mode for checkVisibilityState(): " + mode +
+                                    " Please use VISIBLE or HIDDEN.");
         }
-
         return true;
     }
 
@@ -453,16 +447,13 @@ public class BrowseTheWeb extends Ability {
      * @param mode the expected property of the selector that needs to be checked. either 'enabled' or 'disabled'.
      * @returns true if the element is enabled/disabled as expected, false if the timeout was reached.
      */
-    // ToDo: Use Enum instead of string mode
-    public boolean checkEnabledState(String selector, String mode) {
-        if (mode.equals("enabled")) {
-            assertThat(this.page.locator(selector)).isEnabled();
-        } else if (mode.equals("disabled")) {
-            assertThat(this.page.locator(selector)).isDisabled();
-        } else {
-            throw new RuntimeException("Unknown mode: " + mode);
+    public boolean checkEnabledState(String selector, Modes mode) {
+        switch (mode) {
+            case VISIBLE    -> assertThat(this.page.locator(selector)).isEnabled();
+            case HIDDEN     -> assertThat(this.page.locator(selector)).isDisabled();
+            default         -> throw new RuntimeException("Wrong mode for checkEnabledState(): " + mode +
+                                    " Please use ENABLED or DISABLED.");
         }
-
         return true;
     }
 
@@ -474,16 +465,14 @@ public class BrowseTheWeb extends Ability {
      * @param options advanced selector lookup options.
      * @returns true if the element is enabled/disabled as expected, false if the timeout was reached.
      */
-    // ToDo: Use Enum instead of string mode
     public boolean checkEnabledState(String selector, Modes mode, SelectorOptions options) {
         switch (mode) {
-            case ENABLED ->
-                assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
-                        .isEnabled(new IsEnabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
-            case DISABLED ->
-                assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
-                        .isDisabled(new IsDisabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
-            default -> throw new RuntimeException("Unknown mode for checkEnabledState(): " + mode);
+            case ENABLED    -> assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+                                .isEnabled(new IsEnabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            case DISABLED   -> assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+                                .isDisabled(new IsDisabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            default         -> throw new RuntimeException("Wrong mode for checkEnabledState(): " + mode +
+                                    " Please use ENABLED or DISABLED.");
         }
         return true;
     }
