@@ -7,17 +7,20 @@ import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.SameSiteAttribute;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import testla.screenplay.actor.Actor;
 import testla.web.SelectorOptions;
 import testla.web.SubSelector;
 import testla.web.abilities.BrowseTheWeb;
 import testla.web.actions.*;
+import testla.web.questions.Element;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: implement test for DoubleClick
 // TODO: test different details between Fill and Type
@@ -142,7 +145,7 @@ class WebTest {
     }
 
     @Test
-    void WaitAndRecursiveLocatorsTest() {
+    void WaitAndRecursiveLocatorTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/tables"),
                 Wait.forLoadState(LoadState.NETWORKIDLE),
@@ -254,40 +257,37 @@ class WebTest {
         assert sessionDeleted == null;
     }
 
-    /*
-        test("Element (Question)", async ({ actor }) => {
-        await actor.attemptsTo(
-        Navigate.to("https://the-internet.herokuapp.com/tables"),
-        Wait.forLoadState("networkidle"),
+    // @Test
+    @Disabled("Disabled until Utils.recursiveLocatorLookup is modified!")
+    void ElementTest() {
+        actor.attemptsTo(
+                Navigate.to("https://the-internet.herokuapp.com/tables"),
+                Wait.forLoadState(LoadState.NETWORKIDLE)
         );
 
-        expect(await actor.asks(
-        Element.toBe.visible("h3", { hasText: "Data Tables" }),
-        )).toBe(true);
+        assert actor.asks(
+                // TODO: remove second parameter (activityResult) from Actor.asks in core package!
+                Element.toBe().visible("h3", new SelectorOptions("Data Tables", null, null)), null
+        );
 
-        let visibleRes = false;
-        try {
-        expect(await actor.asks(
-        Element.toBe.visible("h3", { hasText: "this does not exist", timeout: 1000 }),
-        )).toBe(true);
-        } catch (error) {
-        visibleRes = true;
-        }
-        expect(visibleRes).toBeTruthy();
+        // TODO: rewrite timeout for utils
+        assertThrows(RuntimeException.class, () ->
+                actor.asks(
+                    Element.toBe().visible("h3", new SelectorOptions("this does not exist", 1000.0, null)), null
+                )
+        );
 
-        expect(await actor.asks(
-        Element.notToBe.visible("h3", { hasText: "this does not exist" }),
-        )).toBe(true);
+        assert actor.asks(
+                Element.notToBe().visible("h3", new SelectorOptions("this does not exist", 5000.0, null)), null
+        );
 
-        let notVisibleRes = false;
-        try {
-        expect(await actor.asks(
-        Element.notToBe.visible("h3", { hasText: "Data Tables", timeout: 1000 }),
-        )).toBe(true);
-        } catch (error) {
-        notVisibleRes = true;
-        }
-        expect(notVisibleRes).toBeTruthy();
+        assertThrows(RuntimeException.class, () ->
+                actor.asks(
+                        Element.notToBe().visible("h3", new SelectorOptions("Data Tables", 1000.0, null)), null
+                )
+        );
+    }
+    /*
 
         await actor.attemptsTo(
         Navigate.to("https://the-internet.herokuapp.com/tinymce"),
@@ -323,7 +323,6 @@ class WebTest {
         }
         expect(notEnabledRes).toBeTruthy();
         });
-        });
-*/
-
+        })
+    */
 }

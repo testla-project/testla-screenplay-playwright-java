@@ -98,7 +98,7 @@ public class Element extends Question<Boolean> {
                 if (options == null) {
                     return BrowseTheWeb.as(actor).checkEnabledState(this.selector, this.checkMode.equals("toBe") ? Modes.ENABLED : Modes.DISABLED);
                 } else {
-                    return BrowseTheWeb.as(actor).checkVisibilityState(this.selector, this.checkMode.equals("toBe") ? Modes.ENABLED : Modes.DISABLED, this.options);
+                    return BrowseTheWeb.as(actor).checkEnabledState(this.selector, this.checkMode.equals("toBe") ? Modes.ENABLED : Modes.DISABLED, this.options);
                 }
             }
             default -> throw new RuntimeException("Unknown mode for Element.answeredBy(): " + mode);

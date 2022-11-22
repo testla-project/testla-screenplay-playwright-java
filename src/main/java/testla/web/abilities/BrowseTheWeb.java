@@ -449,8 +449,8 @@ public class BrowseTheWeb extends Ability {
      */
     public boolean checkEnabledState(String selector, Modes mode) {
         switch (mode) {
-            case VISIBLE    -> assertThat(this.page.locator(selector)).isEnabled();
-            case HIDDEN     -> assertThat(this.page.locator(selector)).isDisabled();
+            case ENABLED    -> assertThat(this.page.locator(selector)).isEnabled();
+            case DISABLED   -> assertThat(this.page.locator(selector)).isDisabled();
             default         -> throw new RuntimeException("Wrong mode for checkEnabledState(): " + mode +
                                     " Please use ENABLED or DISABLED.");
         }

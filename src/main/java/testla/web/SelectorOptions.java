@@ -10,7 +10,6 @@ public class SelectorOptions {
     public String hasText;
     @Nullable
     public Double timeout;
-
     @Nullable
     public SubSelector subSelector;
 
