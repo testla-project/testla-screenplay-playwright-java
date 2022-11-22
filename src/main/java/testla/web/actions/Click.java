@@ -50,9 +50,9 @@ public class Click extends Action {
     @Override
     public Object performAs(IActor actor) {
         if (this.options == null) {
-            BrowseTheWeb.as(actor).checkBox(this.selector);
+            BrowseTheWeb.as(actor).click(this.selector);
         } else {
-            BrowseTheWeb.as(actor).checkBox(this.selector, this.options);
+            BrowseTheWeb.as(actor).click(this.selector, this.options);
         }
         return null;
     }

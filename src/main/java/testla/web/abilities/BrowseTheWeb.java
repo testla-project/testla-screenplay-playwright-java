@@ -140,7 +140,7 @@ public class BrowseTheWeb extends Ability {
             + "if (value) {"
             + "return Promise.resolve(JSON.parse(value));"
             + "}"
-            + "return Promise.reject();"
+            + "return Promise.resolve(undefined);"
             + "}", key);
     }
 
@@ -183,7 +183,7 @@ public class BrowseTheWeb extends Ability {
             + "if (value) {"
             + "return Promise.resolve(JSON.parse(value));"
             + "}"
-            + "return Promise.reject();"
+            + "return Promise.resolve(undefined);"
             + "}", key);
     }
 

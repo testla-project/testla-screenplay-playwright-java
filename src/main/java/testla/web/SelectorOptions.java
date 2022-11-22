@@ -13,4 +13,10 @@ public class SelectorOptions {
 
     @Nullable
     public SubSelector subSelector;
+
+    public SelectorOptions(@Nullable String hasText, @Nullable Double timeout, @Nullable SubSelector subSelector) {
+        this.hasText = hasText;
+        this.timeout = timeout;
+        this.subSelector = subSelector;
+    }
 }

@@ -10,4 +10,10 @@ public class SubSelector {
 
     @Nullable
     public SelectorOptions selectorOptions;
+
+
+    public SubSelector(String selector, @Nullable SelectorOptions selectorOptions) {
+        this.selector = selector;
+        this.selectorOptions = selectorOptions;
+    }
 }
