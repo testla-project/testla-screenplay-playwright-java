@@ -3,8 +3,13 @@ plugins {
     id 'maven-publish'
 }
 
-group 'testla.screenshot'
+group 'testla.screenplay'
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(16))
+    }
+}
 repositories {
     mavenCentral()
     repositories {
@@ -19,7 +24,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     implementation 'com.microsoft.playwright:playwright:1.27.1'
 
-    implementation 'com.github.testla-project:testla-screenplay-core-java:v0.1.0'
+    implementation 'com.github.testla-project:testla-screenplay-core-java:0.1.0'
 }
 
 test {
