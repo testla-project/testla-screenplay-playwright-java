@@ -33,7 +33,7 @@ class WebTest {
 
     @BeforeAll
     static void setup() {
-        Page page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)).newPage();
+        Page page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(true)).newPage();
         actor = Actor.named("TestActor").can(BrowseTheWeb.using(page)).with("page", page);
     }
 
