@@ -5,11 +5,14 @@ plugins {
 
 group 'testla.screenplay'
 
+/*
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(16))
     }
 }
+*/
+
 repositories {
     mavenCentral()
     repositories {
