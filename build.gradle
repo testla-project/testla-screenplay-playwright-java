@@ -13,11 +13,6 @@ group 'testla.screenplay'
 //    }
 //}
 
-subprojects {
-    sourceCompatibility = 1.17
-    targetCompatibility = 1.17
-}
-
 
 repositories {
     mavenCentral()
@@ -40,3 +35,20 @@ test {
     useJUnitPlatform()
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+wrapper {
+    gradleVersion = "7.3.3"
+    distributionType = Wrapper.DistributionType.ALL
+}
