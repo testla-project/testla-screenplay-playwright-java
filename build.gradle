@@ -5,7 +5,8 @@ plugins {
 
 group 'testla.screenplay'
 
-
+sourceCompatibility = 1.17 // java 8
+targetCompatibility = 1.17
 
 //java {
 //    toolchain {
