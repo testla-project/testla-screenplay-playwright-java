@@ -1,7 +1,6 @@
 # Testla Screenplay-Playwright
 
 [![](https://jitpack.io/v/testla-project/testla-screenplay-playwright-java.svg)](https://jitpack.io/#testla-project/testla-screenplay-playwright-java)
-[![](https://jitci.com/gh/testla-project/testla-screenplay-playwright-java/svg)](https://jitci.com/gh/testla-project/testla-screenplay-playwright-java)
 
 ## Introduction
 
