@@ -29,8 +29,13 @@ public class Utils {
         locator.waitFor(new WaitForOptions().setTimeout(timeout == null ? 0.0 : timeout));
     }
 
-    // ToDo: Add SubSelector ??
     public Locator recursiveLocatorLookup(Page page, String selector, SelectorOptions options) {
+        // replace selector placeholders if present.
+        if (options.replacements != null) {
+            selector = replacePlaceholders(selector, options.replacements);
+            System.out.println(selector);
+        }
+
         // Find first Level Locator!!!
         Locator locator = getPageLocator(page, selector, options.hasText);
 
@@ -57,5 +62,10 @@ public class Utils {
             waitForLocator(resolvedLocator, timeout);
         }
         return resolvedLocator;
+    }
+
+    // support for locator templates to replace placeholders
+    private String replacePlaceholders(String selector, Object... args) {
+        return String.format(selector, args);
     }
 }

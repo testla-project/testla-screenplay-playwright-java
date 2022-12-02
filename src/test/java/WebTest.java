@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import testla.screenplay.actor.Actor;
 import testla.web.SelectorOptions;
 import testla.web.SubSelector;
+import testla.web.Utils;
 import testla.web.abilities.BrowseTheWeb;
 import testla.web.actions.*;
 import testla.web.questions.Element;
@@ -41,6 +42,14 @@ class WebTest {
     void getPage() {
         actorPage = (Page) actor.states("page");
     }
+
+    // @Test // will fail
+    @Disabled
+    void PlaceholderTest() {
+        Utils utils = new Utils();
+        utils.recursiveLocatorLookup(null, "id=[%s]", new SelectorOptions(null, null, null, "title"));
+    }
+
 
     @Test
     void NavigateTest() {

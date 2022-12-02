@@ -12,10 +12,21 @@ public class SelectorOptions {
     public Double timeout;
     @Nullable
     public SubSelector subSelector;
+    @Nullable
+    Object[] replacements;
 
-    public SelectorOptions(@Nullable String hasText, @Nullable Double timeout, @Nullable SubSelector subSelector) {
+    public SelectorOptions(@Nullable String hasText, @Nullable Double timeout, @Nullable SubSelector subSelector,
+                           @Nullable Object... replacements) {
         this.hasText = hasText;
         this.timeout = timeout;
         this.subSelector = subSelector;
+
+        // varargs replacements can be explicitly null or not given at all -> need to check both cases
+        if (replacements != null && replacements.length == 0) {
+            this.replacements = null;
+        } else {
+            this.replacements = replacements;
+
+        }
     }
 }
