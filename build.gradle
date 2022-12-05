@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-group 'testla.screenplay'
+group 'testla.screenplay-playwright'
 
 sourceCompatibility = 1.17 // java 8
 targetCompatibility = 1.17

@@ -87,6 +87,7 @@ class ApiTest {
         assert responseWithHeaders.body.equals(expectedHeaderBody);
     }
 
+    @Disabled
     @Test
     void PatchTest() {
         Map<String, Object> data = new HashMap<>();
