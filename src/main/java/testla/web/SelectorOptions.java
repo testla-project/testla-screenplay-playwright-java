@@ -12,10 +12,38 @@ public class SelectorOptions {
     public Double timeout;
     @Nullable
     public SubSelector subSelector;
+    @Nullable
+    public SelectorOptionsState state;
+    @Nullable
+    Object[] replacements;
 
-    public SelectorOptions(@Nullable String hasText, @Nullable Double timeout, @Nullable SubSelector subSelector) {
+    public SelectorOptions() {
+        // empty constructor instead of constructor with many arguments. Maybe it's better to handle optional arguments
+        // like Playwright.
+    }
+
+    public SelectorOptions setHasText(String hasText) {
         this.hasText = hasText;
+        return this;
+    }
+
+    public SelectorOptions setTimeout(Double timeout) {
         this.timeout = timeout;
+        return this;
+    }
+
+    public SelectorOptions setSubSelector(SubSelector subSelector) {
         this.subSelector = subSelector;
+        return this;
+    }
+
+    public SelectorOptions setSelectorOptionsState(SelectorOptionsState state) {
+        this.state = state;
+        return this;
+    }
+
+    public SelectorOptions setReplacements(Object... replacements) {
+        this.replacements = replacements;
+        return this;
     }
 }

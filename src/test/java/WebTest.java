@@ -9,9 +9,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 import testla.screenplay.actor.Actor;
 import testla.web.SelectorOptions;
+import testla.web.SelectorOptionsState;
 import testla.web.SubSelector;
+import testla.web.Utils;
 import testla.web.abilities.BrowseTheWeb;
 import testla.web.actions.*;
 import testla.web.questions.Element;
@@ -33,7 +36,7 @@ class WebTest {
 
     @BeforeAll
     static void setup() {
-        Page page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(true)).newPage();
+        Page page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)).newPage();
         actor = Actor.named("TestActor").can(BrowseTheWeb.using(page)).with("page", page);
     }
 
@@ -41,6 +44,14 @@ class WebTest {
     void getPage() {
         actorPage = (Page) actor.states("page");
     }
+
+    // @Test // will fail
+    @Disabled
+    void PlaceholderTest() {
+        Utils utils = new Utils();
+        utils.recursiveLocatorLookup(null, "id=[%s]", new SelectorOptions().setReplacements("title"));
+    }
+
 
     @Test
     void NavigateTest() {
@@ -91,7 +102,23 @@ class WebTest {
         assertThat(actorPage.locator("[class='added-manually']")).hasCount(0);
 
         actor.attemptsTo(
-                Click.on("button", new SelectorOptions("Add Element", null, null))
+                Click.on("button", new SelectorOptions().setHasText("Add Element"))
+        );
+        // assert that the button is here after our Click
+        assertThat(actorPage.locator("[class='added-manually']")).hasCount(1);
+    }
+
+    @Test
+    void ReplacementTest() {
+        actor.attemptsTo(
+                Navigate.to("https://the-internet.herokuapp.com/add_remove_elements/"),
+                Wait.forLoadState(LoadState.NETWORKIDLE)
+        );
+        // assert that there is no button before we add it with our Click
+        assertThat(actorPage.locator("[class='added-manually']")).hasCount(0);
+
+        actor.attemptsTo(
+                Click.on("%s", new SelectorOptions().setHasText("Add Element").setReplacements("button"))
         );
         // assert that the button is here after our Click
         assertThat(actorPage.locator("[class='added-manually']")).hasCount(1);
@@ -150,9 +177,10 @@ class WebTest {
                 Navigate.to("https://the-internet.herokuapp.com/tables"),
                 Wait.forLoadState(LoadState.NETWORKIDLE),
 
-                Wait.forSelector("[id='table1']", new SelectorOptions(null, null,
-                        new SubSelector("tbody tr", new SelectorOptions("Conway", null,
-                                new SubSelector("td:has-text('$50.00')", null)))))
+                Wait.forSelector("[id='table1']",
+                        new SelectorOptions().setSubSelector(new SubSelector("tbody tr",
+                                new SelectorOptions().setHasText("Conway")
+                                        .setSubSelector(new SubSelector("td:has-text('$50.00')", null)))))
         );
     }
 
@@ -257,9 +285,8 @@ class WebTest {
         assert sessionDeleted == null;
     }
 
-    // @Test
-    @Disabled("Disabled until Utils.recursiveLocatorLookup is modified!")
-    void ElementTest() {
+    @Test
+    void ElementVisibleTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/tables"),
                 Wait.forLoadState(LoadState.NETWORKIDLE)
@@ -267,62 +294,54 @@ class WebTest {
 
         assert actor.asks(
                 // TODO: remove second parameter (activityResult) from Actor.asks in core package!
-                Element.toBe().visible("h3", new SelectorOptions("Data Tables", null, null)), null
+                Element.toBe().visible("h3", new SelectorOptions().setHasText("Data Tables")
+                                .setSelectorOptionsState(SelectorOptionsState.VISIBLE))
         );
 
-        // TODO: rewrite timeout for utils
         assertThrows(RuntimeException.class, () ->
                 actor.asks(
-                    Element.toBe().visible("h3", new SelectorOptions("this does not exist", 1000.0, null)), null
+                    Element.toBe().visible("h3", new SelectorOptions().setHasText("this does not exist").setTimeout(1000.0))
                 )
         );
 
         assert actor.asks(
-                Element.notToBe().visible("h3", new SelectorOptions("this does not exist", 5000.0, null)), null
+                Element.notToBe().visible("h3", new SelectorOptions().setHasText("this does not exist").setTimeout(5000.0))
         );
 
         assertThrows(RuntimeException.class, () ->
                 actor.asks(
-                        Element.notToBe().visible("h3", new SelectorOptions("Data Tables", 1000.0, null)), null
+                        Element.notToBe().visible("h3", new SelectorOptions().setHasText("Data Tables").setTimeout(1000.0))
                 )
         );
     }
-    /*
 
-        await actor.attemptsTo(
-        Navigate.to("https://the-internet.herokuapp.com/tinymce"),
-        Wait.forLoadState("networkidle"),
-        Click.on("[aria-label="Bold"]"),
+    @Test
+    void ElementEnabledTest() {
+        actor.attemptsTo(
+                Navigate.to("https://the-internet.herokuapp.com/tinymce"),
+                Wait.forLoadState(LoadState.NETWORKIDLE),
+                Click.on("[aria-label='Bold']")
         );
 
-        expect(await actor.asks(
-        Element.toBe.enabled("[aria-label="Undo"]"),
-        )).toBe(true);
+        assert actor.asks(
+                // TODO: remove second parameter (activityResult) from Actor.asks in core package!
+                Element.toBe().enabled("[aria-label='Undo']")
+        );
 
-        let enabledRes = false;
-        try {
-        expect(await actor.asks(
-        Element.toBe.enabled("[aria-label="Redo"]", { timeout: 1000 }),
-        )).toBe(true);
-        } catch (error) {
-        enabledRes = true;
-        }
-        expect(enabledRes).toBeTruthy();
+        assertThrows(AssertionFailedError.class, () ->
+                actor.asks(
+                        Element.toBe().enabled("[aria-label='Redo']", new SelectorOptions().setTimeout(2000.0))
+                )
+        );
 
-        expect(await actor.asks(
-        Element.notToBe.enabled("[aria-label="Redo"]"),
-        )).toBe(true);
+        assert actor.asks(
+                Element.notToBe().enabled("[aria-label='Redo']")
+        );
 
-        let notEnabledRes = false;
-        try {
-        expect(await actor.asks(
-        Element.notToBe.enabled("[aria-label="Undo"]", { timeout: 1000 }),
-        )).toBe(true);
-        } catch (error) {
-        notEnabledRes = true;
-        }
-        expect(notEnabledRes).toBeTruthy();
-        });
-        })
-    */
+        assertThrows(AssertionFailedError.class, () ->
+                actor.asks(
+                        Element.notToBe().enabled("[aria-label='Undo']", new SelectorOptions().setTimeout(2000.0))
+                )
+        );
+    }
 }

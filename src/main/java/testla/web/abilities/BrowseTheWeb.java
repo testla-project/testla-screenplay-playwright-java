@@ -16,6 +16,7 @@ import testla.screenplay.ability.Ability;
 import testla.screenplay.actor.IActor;
 import testla.web.Modes;
 import testla.web.SelectorOptions;
+import testla.web.SelectorOptionsState;
 import testla.web.Utils;
 
 import java.util.HashMap;
@@ -412,8 +413,12 @@ public class BrowseTheWeb extends Ability {
      */
     public boolean checkVisibilityState(String selector, Modes mode) {
         switch (mode) {
-            case VISIBLE    -> assertThat(this.page.locator(selector)).isVisible();
-            case HIDDEN     -> assertThat(this.page.locator(selector)).isHidden();
+            case VISIBLE    -> assertThat(utils.recursiveLocatorLookup(page, selector,
+                                new SelectorOptions().setSelectorOptionsState(SelectorOptionsState.VISIBLE)))
+                                .isVisible();
+            case HIDDEN     -> assertThat(utils.recursiveLocatorLookup(page, selector,
+                                new SelectorOptions().setSelectorOptionsState(SelectorOptionsState.HIDDEN)))
+                                .isHidden();
             default         -> throw new RuntimeException("Wrong mode for checkVisibilityState(): " + mode +
                                     " Please use VISIBLE or HIDDEN.");
         }
@@ -430,9 +435,11 @@ public class BrowseTheWeb extends Ability {
      */
     public boolean checkVisibilityState(String selector, Modes mode, SelectorOptions options) {
         switch (mode) {
-            case VISIBLE    -> assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+            case VISIBLE    -> assertThat(utils.recursiveLocatorLookup(this.page, selector,
+                                options.setSelectorOptionsState(SelectorOptionsState.VISIBLE))) // explicitly set the expected state to visible
                                 .isVisible(new IsVisibleOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
-            case HIDDEN     -> assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+            case HIDDEN     -> assertThat(utils.recursiveLocatorLookup(this.page, selector,
+                                options.setSelectorOptionsState(SelectorOptionsState.HIDDEN))) // explicitly set the expected state to hidden
                                 .isHidden(new IsHiddenOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
             default         -> throw new RuntimeException("Wrong mode for checkVisibilityState(): " + mode +
                                     " Please use VISIBLE or HIDDEN.");
@@ -449,8 +456,12 @@ public class BrowseTheWeb extends Ability {
      */
     public boolean checkEnabledState(String selector, Modes mode) {
         switch (mode) {
-            case ENABLED    -> assertThat(this.page.locator(selector)).isEnabled();
-            case DISABLED   -> assertThat(this.page.locator(selector)).isDisabled();
+            case ENABLED    -> assertThat(utils.recursiveLocatorLookup(page, selector,
+                                new SelectorOptions().setSelectorOptionsState(SelectorOptionsState.VISIBLE)))
+                                .isEnabled();
+            case DISABLED     -> assertThat(utils.recursiveLocatorLookup(page, selector,
+                                new SelectorOptions().setSelectorOptionsState(SelectorOptionsState.VISIBLE)))
+                                .isDisabled();
             default         -> throw new RuntimeException("Wrong mode for checkEnabledState(): " + mode +
                                     " Please use ENABLED or DISABLED.");
         }
@@ -467,9 +478,11 @@ public class BrowseTheWeb extends Ability {
      */
     public boolean checkEnabledState(String selector, Modes mode, SelectorOptions options) {
         switch (mode) {
-            case ENABLED    -> assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+            case ENABLED    -> assertThat(utils.recursiveLocatorLookup(this.page, selector,
+                                options.setSelectorOptionsState(SelectorOptionsState.VISIBLE))) // explicitly set the expected state to visible
                                 .isEnabled(new IsEnabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
-            case DISABLED   -> assertThat(utils.recursiveLocatorLookup(this.page, selector, options))
+            case DISABLED   -> assertThat(utils.recursiveLocatorLookup(this.page, selector,
+                                options.setSelectorOptionsState(SelectorOptionsState.VISIBLE))) // explicitly set the expected state to visible
                                 .isDisabled(new IsDisabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
             default         -> throw new RuntimeException("Wrong mode for checkEnabledState(): " + mode +
                                     " Please use ENABLED or DISABLED.");
