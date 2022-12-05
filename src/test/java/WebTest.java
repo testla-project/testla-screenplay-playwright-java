@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 import testla.screenplay.actor.Actor;
 import testla.web.SelectorOptions;
 import testla.web.SelectorOptionsState;
@@ -102,6 +103,22 @@ class WebTest {
 
         actor.attemptsTo(
                 Click.on("button", new SelectorOptions().setHasText("Add Element"))
+        );
+        // assert that the button is here after our Click
+        assertThat(actorPage.locator("[class='added-manually']")).hasCount(1);
+    }
+
+    @Test
+    void ReplacementTest() {
+        actor.attemptsTo(
+                Navigate.to("https://the-internet.herokuapp.com/add_remove_elements/"),
+                Wait.forLoadState(LoadState.NETWORKIDLE)
+        );
+        // assert that there is no button before we add it with our Click
+        assertThat(actorPage.locator("[class='added-manually']")).hasCount(0);
+
+        actor.attemptsTo(
+                Click.on("%s", new SelectorOptions().setHasText("Add Element").setReplacements("button"))
         );
         // assert that the button is here after our Click
         assertThat(actorPage.locator("[class='added-manually']")).hasCount(1);
@@ -279,27 +296,26 @@ class WebTest {
                 // TODO: remove second parameter (activityResult) from Actor.asks in core package!
                 Element.toBe().visible("h3", new SelectorOptions().setHasText("Data Tables")
                                 .setSelectorOptionsState(SelectorOptionsState.VISIBLE))
-        , null);
+        );
 
         assertThrows(RuntimeException.class, () ->
                 actor.asks(
                     Element.toBe().visible("h3", new SelectorOptions().setHasText("this does not exist").setTimeout(1000.0))
-                , null)
+                )
         );
 
         assert actor.asks(
                 Element.notToBe().visible("h3", new SelectorOptions().setHasText("this does not exist").setTimeout(5000.0))
-        , null);
+        );
 
         assertThrows(RuntimeException.class, () ->
                 actor.asks(
                         Element.notToBe().visible("h3", new SelectorOptions().setHasText("Data Tables").setTimeout(1000.0))
-                , null)
+                )
         );
     }
 
     @Test
-    @Disabled
     void ElementEnabledTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/tinymce"),
@@ -310,22 +326,22 @@ class WebTest {
         assert actor.asks(
                 // TODO: remove second parameter (activityResult) from Actor.asks in core package!
                 Element.toBe().enabled("[aria-label='Undo']")
-        , null);
+        );
 
-        assertThrows(RuntimeException.class, () ->
+        assertThrows(AssertionFailedError.class, () ->
                 actor.asks(
                         Element.toBe().enabled("[aria-label='Redo']", new SelectorOptions().setTimeout(2000.0))
-                , null)
+                )
         );
 
         assert actor.asks(
                 Element.notToBe().enabled("[aria-label='Redo']")
-        , null);
+        );
 
-        assertThrows(RuntimeException.class, () ->
+        assertThrows(AssertionFailedError.class, () ->
                 actor.asks(
                         Element.notToBe().enabled("[aria-label='Undo']", new SelectorOptions().setTimeout(2000.0))
-                , null)
+                )
         );
     }
 }
