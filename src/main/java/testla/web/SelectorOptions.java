@@ -17,23 +17,6 @@ public class SelectorOptions {
     @Nullable
     Object[] replacements;
 
-    /*
-    public SelectorOptions(@Nullable String hasText, @Nullable Double timeout, @Nullable SubSelector subSelector,
-                           @Nullable SelectorOptionsState state, @Nullable Object... replacements) {
-        this.hasText = hasText;
-        this.timeout = timeout;
-        this.subSelector = subSelector;
-        this.state = state;
-
-        // varargs replacements can be explicitly null or not given at all -> need to check both cases
-        if (replacements != null && replacements.length == 0) {
-            this.replacements = null;
-        } else {
-            this.replacements = replacements;
-        }
-    }
-    */
-
     public SelectorOptions() {
         // empty constructor instead of constructor with many arguments. Maybe it's better to handle optional arguments
         // like Playwright.
