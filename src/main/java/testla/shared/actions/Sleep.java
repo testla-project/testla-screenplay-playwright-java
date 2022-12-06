@@ -17,7 +17,9 @@ public class Sleep extends Action {
 
     /**
      * Performs the sleep.
+     *  @deprecated use {@link #now(Long)} instead.
      */
+    @Deprecated
     public static Sleep forMillis(Long millis) {
         return new Sleep(millis);
     }
@@ -35,8 +37,21 @@ public class Sleep extends Action {
      * Pause the execution of further test steps for a given interval in milliseconds.
      *
      * @param millis interval in milliseconds.
+     *
+     * @deprecated use {@link #now(Long)} instead.
      */
+    @Deprecated
     public static Sleep For(Long millis) {
+        return new Sleep(millis);
+    }
+
+    /**
+     * Pause the execution of further test steps for a given interval in milliseconds.
+     *
+     * @param millis interval in milliseconds.
+     * @return new Sleep instance.
+     */
+    public static Sleep now(Long millis) {
         return new Sleep(millis);
     }
 }
