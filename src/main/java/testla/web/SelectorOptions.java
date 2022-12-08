@@ -17,9 +17,11 @@ public class SelectorOptions {
     @Nullable
     Object[] replacements;
 
+    /**
+     * Empty constructor instead of constructor with many argument.
+     * Maybe it's better to handle optional arguments like playwright.
+     */
     public SelectorOptions() {
-        // empty constructor instead of constructor with many arguments. Maybe it's better to handle optional arguments
-        // like Playwright.
     }
 
     /**
