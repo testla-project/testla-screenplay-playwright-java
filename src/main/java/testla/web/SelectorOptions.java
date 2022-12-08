@@ -6,14 +6,34 @@ import org.jetbrains.annotations.Nullable;
  * Class that holds elements to help with advanced selector options.
  */
 public class SelectorOptions {
+
+    /**
+     * Selector option hasText
+     */
     @Nullable
     public String hasText;
+
+    /**
+     * Selector option timeout
+     */
     @Nullable
     public Double timeout;
+
+    /**
+     * Selector option subSelector
+     */
     @Nullable
     public SubSelector subSelector;
+
+    /**
+     * Selector option state
+     */
     @Nullable
     public SelectorOptionsState state;
+
+    /**
+     * Selector option replacements
+     */
     @Nullable
     Object[] replacements;
 
