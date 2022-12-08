@@ -27,7 +27,7 @@ class ApiTest {
     }
 
     @Test
-    void GetTest() {
+    void getTest() {
         Response response = (Response) actor.attemptsTo(
                 Get.from("http://zippopotam.us/us/90210").withResponseBodyFormat(ResponseBodyFormat.TEXT)
         );
@@ -37,7 +37,7 @@ class ApiTest {
 
     @Test
     @Disabled("Website is down (response has status 404)? -> need to find alternative site for POST testing...")
-    void PostTest() {
+    void postTest() {
         Response response = (Response) actor.attemptsTo(
                 Post.to("https://ptsv2.com/t/ibcu7-1639386619/post")
                         .withData("TEST!")
@@ -48,7 +48,7 @@ class ApiTest {
     }
 
     @Test
-    void PutTest() {
+    void putTest() {
         Map<String, Object> data = new HashMap<>();
         data.put("id", 1);
         data.put("title", "foo");
@@ -89,7 +89,7 @@ class ApiTest {
 
     @Disabled
     @Test
-    void PatchTest() {
+    void patchTest() {
         Map<String, Object> data = new HashMap<>();
         data.put("id", 1);
         data.put("title", "I patched this title!");

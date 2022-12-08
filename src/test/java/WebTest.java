@@ -16,7 +16,20 @@ import testla.web.SelectorOptionsState;
 import testla.web.SubSelector;
 import testla.web.Utils;
 import testla.web.abilities.BrowseTheWeb;
-import testla.web.actions.*;
+import testla.web.actions.Add;
+import testla.web.actions.Check;
+import testla.web.actions.Clear;
+import testla.web.actions.Click;
+import testla.web.actions.DragAndDrop;
+import testla.web.actions.Fill;
+import testla.web.actions.Get;
+import testla.web.actions.Hover;
+import testla.web.actions.Navigate;
+import testla.web.actions.Press;
+import testla.web.actions.Remove;
+import testla.web.actions.Set;
+import testla.web.actions.Type;
+import testla.web.actions.Wait;
 import testla.web.questions.Element;
 
 import java.util.ArrayList;
@@ -47,14 +60,14 @@ class WebTest {
 
     // @Test // will fail
     @Disabled
-    void PlaceholderTest() {
+    void placeholderTest() {
         Utils utils = new Utils();
         utils.recursiveLocatorLookup(null, "id=[%s]", new SelectorOptions().setReplacements("title"));
     }
 
 
     @Test
-    void NavigateTest() {
+    void navigateTest() {
         actor.attemptsTo(
                 Navigate.to("https://google.de")
         );
@@ -63,7 +76,7 @@ class WebTest {
     }
 
     @Test
-    void DragAndDropTest() {
+    void dragAndDropTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/drag_and_drop"),
                 Wait.forLoadState(LoadState.NETWORKIDLE)
@@ -80,7 +93,7 @@ class WebTest {
     }
 
     @Test
-    void CheckTest() {
+    void checkTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/checkboxes"),
                 Wait.forLoadState(LoadState.NETWORKIDLE),
@@ -93,7 +106,7 @@ class WebTest {
     }
 
     @Test
-    void ClickTest() {
+    void clickTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/add_remove_elements/"),
                 Wait.forLoadState(LoadState.NETWORKIDLE)
@@ -109,7 +122,7 @@ class WebTest {
     }
 
     @Test
-    void ReplacementTest() {
+    void replacementTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/add_remove_elements/"),
                 Wait.forLoadState(LoadState.NETWORKIDLE)
@@ -125,7 +138,7 @@ class WebTest {
     }
 
     @Test
-    void FillAndTypeTest() {
+    void fillAndTypeTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/login"),
                 Wait.forLoadState(LoadState.NETWORKIDLE),
@@ -139,7 +152,7 @@ class WebTest {
     }
 
     @Test
-    void HoverTest() {
+    void hoverTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/hovers"),
                 Wait.forLoadState(LoadState.NETWORKIDLE)
@@ -155,7 +168,7 @@ class WebTest {
     }
 
     @Test
-    void PressTest() {
+    void pressTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/key_presses"),
                 Wait.forLoadState(LoadState.NETWORKIDLE)
@@ -172,7 +185,7 @@ class WebTest {
     }
 
     @Test
-    void WaitAndRecursiveLocatorTest() {
+    void waitAndRecursiveLocatorTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/tables"),
                 Wait.forLoadState(LoadState.NETWORKIDLE),
@@ -185,7 +198,7 @@ class WebTest {
     }
 
     @Test
-    void CookieTest() {
+    void cookieTest() {
         BrowserContext context = actorPage.context();
 
         actor.attemptsTo(
@@ -237,7 +250,7 @@ class WebTest {
     }
 
     @Test
-    void LocalStorageAndSessionStorageTest() {
+    void localStorageAndSessionStorageTest() {
         actor.attemptsTo(
                 Navigate.to("https://google.com"),
                 Wait.forLoadState(LoadState.NETWORKIDLE),
@@ -286,7 +299,7 @@ class WebTest {
     }
 
     @Test
-    void ElementVisibleTest() {
+    void elementVisibleTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/tables"),
                 Wait.forLoadState(LoadState.NETWORKIDLE)
@@ -316,7 +329,7 @@ class WebTest {
     }
 
     @Test
-    void ElementEnabledTest() {
+    void elementEnabledTest() {
         actor.attemptsTo(
                 Navigate.to("https://the-internet.herokuapp.com/tinymce"),
                 Wait.forLoadState(LoadState.NETWORKIDLE),
