@@ -1,5 +1,8 @@
 package testla.api;
 
+/**
+ * Represents the api modes.
+ */
 public enum Modes {
     EQUAL,
     UNEQUAL,
