@@ -7,29 +7,14 @@ import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.SameSiteAttribute;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 import testla.screenplay.actor.Actor;
 import testla.web.SelectorOptions;
 import testla.web.SelectorOptionsState;
 import testla.web.SubSelector;
-import testla.web.Utils;
 import testla.web.abilities.BrowseTheWeb;
-import testla.web.actions.Add;
-import testla.web.actions.Check;
-import testla.web.actions.Clear;
-import testla.web.actions.Click;
-import testla.web.actions.DragAndDrop;
-import testla.web.actions.Fill;
-import testla.web.actions.Get;
-import testla.web.actions.Hover;
-import testla.web.actions.Navigate;
-import testla.web.actions.Press;
-import testla.web.actions.Remove;
-import testla.web.actions.Set;
-import testla.web.actions.Type;
-import testla.web.actions.Wait;
+import testla.web.actions.*;
 import testla.web.questions.Element;
 
 import java.util.ArrayList;
@@ -58,13 +43,6 @@ class WebTest {
         actorPage = (Page) actor.states("page");
     }
 
-    // @Test // will fail
-    @Disabled
-    void placeholderTest() {
-        Utils utils = new Utils();
-        utils.recursiveLocatorLookup(null, "id=[%s]", new SelectorOptions().setReplacements("title"));
-    }
-
 
     @Test
     void navigateTest() {
@@ -75,6 +53,7 @@ class WebTest {
         assertThat(actorPage).hasURL("https://www.google.de/");
     }
 
+    // also tests placeholders
     @Test
     void dragAndDropTest() {
         actor.attemptsTo(
