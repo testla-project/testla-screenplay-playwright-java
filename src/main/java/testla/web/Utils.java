@@ -7,18 +7,10 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Utility functions used to deal with SubSelectors and advanced selector options.
+ * Utility functions used to deal with subselectors and advanced selector options.
  */
 public class Utils {
-
-    /**
-     * Resolve a locator from the page, optionally with hasText.
-     *
-     * @param page - page object
-     * @param selector - selector to search
-     * @param hasText - locator should have this text
-     * @return Locator - resolved locator
-     */
+    // resolve a locator from the page, optionally with hasText.
     private Locator getPageLocator(Page page, String selector, @Nullable String hasText) {
         if (hasText == null) {
             return page.locator(selector);
@@ -27,14 +19,7 @@ public class Utils {
         }
     }
 
-    /**
-     * Resolve a locator from another locator, optionally with hasText.
-     *
-     * @param locator - base locator
-     * @param selector - selector to search for
-     * @param hasText - locator should have this text
-     * @return Locator - resolved locator
-     */
+    // resolve a locator from another locator, optionally with hasText.
     private Locator getLocatorFromLocator(Locator locator, String selector, @Nullable String hasText) {
         if (hasText == null) {
             return locator.locator(selector);
@@ -43,28 +28,25 @@ public class Utils {
         }
     }
 
-    /**
-     * Wait until the given locator has the given state. default state is visible if no state is specified. timeout optional.
-     *
-     * @param locator - the locator
-     * @param timeout - timeout can be null
-     * @param state - SelectorOptionState can be null
-     */
+    // wait until the given locator has the given state. default state is visible if no state is specified. timeout optional.
     private void waitForLocator(Locator locator, @Nullable Double timeout, @Nullable SelectorOptionsState state) {
         locator.waitFor(new WaitForOptions().setTimeout(timeout == null ? 0.0 : timeout)
                 .setState(state == null ? WaitForSelectorState.VISIBLE : WaitForSelectorState.valueOf(state.toString())));
     }
 
-    /**
-     * Get a Locator from a page. Performs recursive subLocator lookups if options.subLocator is specified.
-     * Supports further options timeouts, state that the Locator should have (visible, hidden, attached, detached).
-     *
-     * @param page - the playwright page object
-     * @param selector - the selector
-     * @param options - SelectorOptions
-     * @return Locator - the locator found on the page
+    /*
+    Get a Locator from a page. Performs recursive subLocator lookups if options.subLocator is specified.
+    Supports further options timeouts, state that the Locator should have (visible, hidden, attached, detached).
      */
     public Locator recursiveLocatorLookup(Page page, String selector, SelectorOptions options) {
+        // double check if this method was somehow called with options == null.
+        // if this is really the case, just resolve the locator, wait for it to be visible and return it.
+        if (options == null) {
+            Locator locator = getPageLocator(page, selector, null);
+            waitForLocator(locator, null, null);
+            return locator;
+        }
+
         // replace selector placeholders if present.
         if (options.replacements != null) {
             selector = replacePlaceholders(selector, options.replacements);
@@ -82,17 +64,8 @@ public class Utils {
         }
     }
 
+    // perform the subLocator lookup. Search below the given locator and
     // TODO: parameter page might be unused? In JS version too.
-    /**
-     * Perform the subLocator lookup. Search below the given locator
-     *
-     * @param page - the page object
-     * @param locator - base locator
-     * @param timeout - timeout can be null
-     * @param subSelector - SubSelector
-     * @param state - SelectorOptionsState can be null
-     * @return Locator - the resolved locator
-     */
     private Locator subLocatorLookup(Page page, Locator locator, @Nullable Double timeout, SubSelector subSelector,
                                      @Nullable SelectorOptionsState state) {
         Locator resolvedLocator = locator;
@@ -114,13 +87,7 @@ public class Utils {
         return resolvedLocator;
     }
 
-    /**
-     * Support for locator templates to replace placeholders.
-     *
-     * @param selector - the selector template
-     * @param args - arguments to replace placeholders
-     * @return String - Replaced placeholders
-     */
+    // support for locator templates to replace placeholders.
     private String replacePlaceholders(String selector, Object... args) {
         return String.format(selector, args);
     }

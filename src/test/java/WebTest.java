@@ -86,7 +86,8 @@ class WebTest {
 
         // execute the drag
         actor.attemptsTo(
-                DragAndDrop.execute("[id='column-a']", "[id='column-b']")
+                DragAndDrop.execute("[id='column-%s']", "[id='column-b']",
+                        new SelectorOptions().setReplacements("a"), null)
         );
         // after Drag: Box B is on the Left
         assertThat(actorPage.locator("[id='column-a'] header")).hasText("B");
