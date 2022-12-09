@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * Utility functions used to deal with SubSelectors and advanced selector options.
  */
 public class Utils {
+
     /**
      * Resolve a locator from the page, optionally with hasText.
      *
@@ -89,6 +90,7 @@ public class Utils {
         }
     }
 
+    // TODO: parameter page might be unused? In JS version too.
     /**
      * Perform the subLocator lookup. Search below the given locator
      *
@@ -99,7 +101,6 @@ public class Utils {
      * @param state - SelectorOptionsState can be null
      * @return Locator - the resolved locator
      */
-    // TODO: parameter page might be unused? In JS version too.
     private Locator subLocatorLookup(Page page, Locator locator, @Nullable Double timeout, SubSelector subSelector,
                                      @Nullable SelectorOptionsState state) {
         Locator resolvedLocator = locator;
