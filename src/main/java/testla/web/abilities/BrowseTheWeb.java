@@ -12,6 +12,7 @@ import com.microsoft.playwright.assertions.LocatorAssertions.IsVisibleOptions;
 import com.microsoft.playwright.options.Cookie;
 import com.microsoft.playwright.options.KeyboardModifier;
 import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.options.SelectOption;
 import testla.screenplay.ability.Ability;
 import testla.screenplay.actor.IActor;
 import testla.web.Modes;
@@ -402,6 +403,55 @@ public class BrowseTheWeb extends Ability {
      */
     public void dblclick(String selector, SelectorOptions options) {
         utils.recursiveLocatorLookup(this.page, selector, options).dblclick();
+    }
+
+
+    /**
+     * Select a Dropdown menu option.
+     *
+     * @param selector the selector of the element to hover over.
+     * @param dropDownOption the dropDown option that should be selected.
+     * @param optionMode the mode of the dropDownOption. Supported: "value", "index" and "label".
+     */
+    public List<String> selectOption(String selector, String dropDownOption, String optionMode) {
+        switch (optionMode) {
+            case "value" -> {
+                return this.page.selectOption(selector, new SelectOption().setValue(dropDownOption));
+            }
+            case "label" -> {
+                return this.page.selectOption(selector, new SelectOption().setLabel(dropDownOption));
+            }
+            case "index" -> {
+                return this.page.selectOption(selector, new SelectOption().setIndex(Integer.parseInt(dropDownOption)));
+            }
+            default -> throw new RuntimeException("Error: illegal optionMode! Please use either 'label', 'value' or 'index'.");
+        }
+    }
+
+    /**
+     * Select a Dropdown menu option.
+     *
+     * @param selector the selector of the element to hover over.
+     * @param dropDownOption the dropDown option that should be selected.
+     * @param selectorOptions advanced selector lookup options.
+     * @param optionMode the mode of the dropDownOption. Supported: "value", "index" and "label".
+     */
+    public List<String> selectOption(String selector, String dropDownOption, SelectorOptions selectorOptions, String optionMode) {
+        switch (optionMode) {
+            case "value" -> {
+                return utils.recursiveLocatorLookup(this.page, selector, selectorOptions)
+                            .selectOption(new SelectOption().setValue(dropDownOption));
+            }
+            case "label" -> {
+                return utils.recursiveLocatorLookup(this.page, selector, selectorOptions)
+                        .selectOption(new SelectOption().setLabel(dropDownOption));
+            }
+            case "index" -> {
+                return utils.recursiveLocatorLookup(this.page, selector, selectorOptions)
+                        .selectOption(new SelectOption().setIndex(Integer.parseInt(dropDownOption)));
+            }
+            default -> throw new RuntimeException("Error in Select.option: illegal optionMode! Please use either 'label', 'value' or 'index'.");
+        }
     }
 
     /**

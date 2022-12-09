@@ -14,20 +14,7 @@ import testla.web.SelectorOptions;
 import testla.web.SelectorOptionsState;
 import testla.web.SubSelector;
 import testla.web.abilities.BrowseTheWeb;
-import testla.web.actions.Add;
-import testla.web.actions.Check;
-import testla.web.actions.Clear;
-import testla.web.actions.Click;
-import testla.web.actions.DragAndDrop;
-import testla.web.actions.Fill;
-import testla.web.actions.Get;
-import testla.web.actions.Hover;
-import testla.web.actions.Navigate;
-import testla.web.actions.Press;
-import testla.web.actions.Remove;
-import testla.web.actions.Set;
-import testla.web.actions.Type;
-import testla.web.actions.Wait;
+import testla.web.actions.*;
 import testla.web.questions.Element;
 
 import java.util.ArrayList;
@@ -47,7 +34,7 @@ class WebTest {
 
     @BeforeAll
     static void setup() {
-        Page page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(true)).newPage();
+        Page page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)).newPage();
         actor = Actor.named("TestActor").can(BrowseTheWeb.using(page)).with("page", page);
     }
 
@@ -187,6 +174,16 @@ class WebTest {
                         new SelectorOptions().setSubSelector(new SubSelector("tbody tr",
                                 new SelectorOptions().setHasText("Conway")
                                         .setSubSelector(new SubSelector("td:has-text('$50.00')", null)))))
+        );
+    }
+
+    @Test
+    void selectDropDownTest() {
+        actor.attemptsTo(
+                Navigate.to("https://the-internet.herokuapp.com/dropdown"),
+                Wait.forLoadState(LoadState.NETWORKIDLE),
+
+                Select.option("[id='%s']", "2", new SelectorOptions().setReplacements("dropdown"), "value")
         );
     }
 
