@@ -7,14 +7,12 @@ import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.SameSiteAttribute;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 import testla.screenplay.actor.Actor;
 import testla.web.SelectorOptions;
 import testla.web.SelectorOptionsState;
 import testla.web.SubSelector;
-import testla.web.Utils;
 import testla.web.abilities.BrowseTheWeb;
 import testla.web.actions.Add;
 import testla.web.actions.Check;
@@ -58,13 +56,6 @@ class WebTest {
         actorPage = (Page) actor.states("page");
     }
 
-    // @Test // will fail
-    @Disabled
-    void placeholderTest() {
-        Utils utils = new Utils();
-        utils.recursiveLocatorLookup(null, "id=[%s]", new SelectorOptions().setReplacements("title"));
-    }
-
 
     @Test
     void navigateTest() {
@@ -75,6 +66,7 @@ class WebTest {
         assertThat(actorPage).hasURL("https://www.google.de/");
     }
 
+    // also tests placeholders
     @Test
     void dragAndDropTest() {
         actor.attemptsTo(
@@ -86,7 +78,8 @@ class WebTest {
 
         // execute the drag
         actor.attemptsTo(
-                DragAndDrop.execute("[id='column-a']", "[id='column-b']")
+                DragAndDrop.execute("[id='column-%s']", "[id='column-b']",
+                        new SelectorOptions().setReplacements("a"), null)
         );
         // after Drag: Box B is on the Left
         assertThat(actorPage.locator("[id='column-a'] header")).hasText("B");

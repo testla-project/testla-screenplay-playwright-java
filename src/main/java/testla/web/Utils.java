@@ -44,7 +44,7 @@ public class Utils {
     }
 
     /**
-     * Wait until the given locator has the given state. default state is visible if no state is specified. timeout optional.
+     * Wait until the given locator has the given state. Default state is visible if no state is specified. Timeout optional.
      *
      * @param locator - the locator
      * @param timeout - timeout can be null
@@ -65,6 +65,14 @@ public class Utils {
      * @return Locator - the locator found on the page
      */
     public Locator recursiveLocatorLookup(Page page, String selector, SelectorOptions options) {
+        // double check if this method was somehow called with options == null.
+        // if this is really the case, just resolve the locator, wait for it to be visible and return it.
+        if (options == null) {
+            Locator locator = getPageLocator(page, selector, null);
+            waitForLocator(locator, null, null);
+            return locator;
+        }
+
         // replace selector placeholders if present.
         if (options.replacements != null) {
             selector = replacePlaceholders(selector, options.replacements);
