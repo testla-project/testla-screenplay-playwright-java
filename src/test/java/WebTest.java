@@ -25,6 +25,7 @@ import testla.web.actions.Hover;
 import testla.web.actions.Navigate;
 import testla.web.actions.Press;
 import testla.web.actions.Remove;
+import testla.web.actions.Select;
 import testla.web.actions.Set;
 import testla.web.actions.Type;
 import testla.web.actions.Wait;
@@ -187,6 +188,16 @@ class WebTest {
                         new SelectorOptions().setSubSelector(new SubSelector("tbody tr",
                                 new SelectorOptions().setHasText("Conway")
                                         .setSubSelector(new SubSelector("td:has-text('$50.00')", null)))))
+        );
+    }
+
+    @Test
+    void selectDropDownTest() {
+        actor.attemptsTo(
+                Navigate.to("https://the-internet.herokuapp.com/dropdown"),
+                Wait.forLoadState(LoadState.NETWORKIDLE),
+
+                Select.option("[id='%s']", "2", new SelectorOptions().setReplacements("dropdown"), "value")
         );
     }
 
