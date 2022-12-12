@@ -229,11 +229,31 @@ public class BrowseTheWeb extends Ability {
     /**
      * Check the specified checkbox.
      *
+     * @param locator the locator of the checkbox.
+     */
+    public void checkBox(Locator locator) {
+        locator.check();
+    }
+
+    /**
+     * Check the specified checkbox.
+     *
      * @param selector the selector of the checkbox.
      * @param options advanced selector lookup options.
      */
     public void checkBox(String selector, SelectorOptions options) {
         utils.recursiveLocatorLookup(this.page, selector, options)
+                .check();
+    }
+
+    /**
+     * Check the specified checkbox.
+     *
+     * @param locator the locator of the checkbox.
+     * @param options advanced selector lookup options.
+     */
+    public void checkBox(Locator locator, SelectorOptions options) {
+        utils.recursiveLocatorLookup(this.page, locator, options)
                 .check();
     }
 
@@ -244,6 +264,15 @@ public class BrowseTheWeb extends Ability {
      */
     public void hover(String selector) {
         this.page.hover(selector);
+    }
+
+    /**
+     * Use the page mouse to hover over the specified element.
+     *
+     * @param locator the locator of the element to hover over.
+     */
+    public void hover(Locator locator) {
+        locator.hover();
     }
 
     /**
@@ -260,11 +289,32 @@ public class BrowseTheWeb extends Ability {
     /**
      * Use the page mouse to hover over the specified element.
      *
+     * @param locator the locator of the element to hover over.
+     * @param modifiers modifier keys to press. Ensures that only these modifiers are pressed during the operation.
+     */
+    public void hover(Locator locator, List<KeyboardModifier> modifiers) {
+        locator.hover(new Locator.HoverOptions().setModifiers(modifiers));
+    }
+
+    /**
+     * Use the page mouse to hover over the specified element.
+     *
      * @param selector the selector of the element to hover over.
      * @param options advanced selector lookup options.
      */
     public void hover(String selector, SelectorOptions options) {
         utils.recursiveLocatorLookup(this.page, selector, options)
+                .hover();
+    }
+
+    /**
+     * Use the page mouse to hover over the specified element.
+     *
+     * @param locator the locator of the element to hover over.
+     * @param options advanced selector lookup options.
+     */
+    public void hover(Locator locator, SelectorOptions options) {
+        utils.recursiveLocatorLookup(this.page, locator, options)
                 .hover();
     }
 
@@ -282,12 +332,34 @@ public class BrowseTheWeb extends Ability {
     }
 
     /**
+     * Use the page mouse to hover over the specified element.
+     *
+     * @param locator the locator of the element to hover over.
+     * @param options advanced selector lookup options.
+     * @param modifiers modifier keys to press. Ensures that only these modifiers are pressed during the operation.
+     */
+    public void hover(Locator locator, SelectorOptions options, List<KeyboardModifier> modifiers) {
+        utils.recursiveLocatorLookup(this.page, locator, options)
+                .hover(new Locator.HoverOptions()
+                        .setModifiers(modifiers));
+    }
+
+    /**
      * Wait until the element of the specified selector exists.
      *
      * @param selector the selector of the element.
      */
     public void waitForSelector(String selector) {
         this.page.waitForSelector(selector);
+    }
+
+    /**
+     * Wait until the element of the specified locator exists.
+     *
+     * @param locator the locator of the element.
+     */
+    public void waitForSelector(Locator locator) {
+        locator.waitFor();
     }
 
     /**
@@ -301,6 +373,16 @@ public class BrowseTheWeb extends Ability {
     }
 
     /**
+     * Wait until the element of the specified selector exists.
+     *
+     * @param locator the locator of the element.
+     * @param options advanced selector lookup options.
+     */
+    public void waitForSelector(Locator locator, SelectorOptions options) {
+        utils.recursiveLocatorLookup(this.page, locator, options);
+    }
+
+    /**
      * Drag the specified source element to the specified target element and drop it.
      *
      * @param sourceSelector the selector of the source element.
@@ -308,6 +390,16 @@ public class BrowseTheWeb extends Ability {
      */
     public void dragAndDrop(String sourceSelector, String targetSelector) {
         this.page.dragAndDrop(sourceSelector, targetSelector);
+    }
+
+    /**
+     * Drag the specified source element to the specified target element and drop it.
+     *
+     * @param sourceLocator the locator of the source element.
+     * @param targetLocator the locator of the target element.
+     */
+    public void dragAndDrop(Locator sourceLocator, Locator targetLocator) {
+        sourceLocator.dragTo(targetLocator);
     }
 
     /**
@@ -326,6 +418,21 @@ public class BrowseTheWeb extends Ability {
     }
 
     /**
+     * Drag the specified source element to the specified target element and drop it.
+     *
+     * @param sourceLocator the locator of the source element.
+     * @param targetLocator the locator of the target element.
+     * @param sourceOptions advanced selector lookup options for the source selector.
+     * @param targetOptions advanced selector lookup options for the target selector.
+     */
+    public void dragAndDrop(Locator sourceLocator, Locator targetLocator, SelectorOptions sourceOptions, SelectorOptions targetOptions) {
+        Locator target = utils.recursiveLocatorLookup(this.page, targetLocator, targetOptions);
+        utils.recursiveLocatorLookup(this.page, sourceLocator, sourceOptions)
+                .dragTo(target, new DragToOptions()
+                        .setTargetPosition(0.0, 0.0));
+    }
+
+    /**
      * Fill the element specified by the selector with the given input.
      *
      * @param selector the selector of the source element.
@@ -333,6 +440,16 @@ public class BrowseTheWeb extends Ability {
      */
     public void fill(String selector, String input) {
         this.page.fill(selector, input);
+    }
+
+    /**
+     * Fill the element specified by the locator with the given input.
+     *
+     * @param locator the locator of the source element.
+     * @param input the input to fill the element with.
+     */
+    public void fill(Locator locator, String input) {
+        locator.fill(input);
     }
 
     /**
@@ -347,6 +464,17 @@ public class BrowseTheWeb extends Ability {
     }
 
     /**
+     * Fill the element specified by the locator with the given input.
+     *
+     * @param locator the locator of the source element.
+     * @param input the input to fill the element with.
+     * @param options advanced selector lookup options.
+     */
+    public void fill(Locator locator, String input, SelectorOptions options) {
+        utils.recursiveLocatorLookup(this.page, locator, options).fill(input);
+    }
+
+    /**
      * Type the given input into the element specified by the selector.
      *
      * @param selector the selector of the source element.
@@ -354,6 +482,16 @@ public class BrowseTheWeb extends Ability {
      */
     public void type(String selector, String input) {
         this.page.type(selector, input);
+    }
+
+    /**
+     * Type the given input into the element specified by the locator.
+     *
+     * @param locator the locator of the source element.
+     * @param input the input to type into the element.
+     */
+    public void type(Locator locator, String input) {
+        locator.type(input);
     }
 
     /**
@@ -368,12 +506,32 @@ public class BrowseTheWeb extends Ability {
     }
 
     /**
+     * Type the given input into the element specified by the locator.
+     *
+     * @param locator the locator of the source element.
+     * @param input the input to type into the element.
+     * @param options advanced selector lookup options.
+     */
+    public void type(Locator locator, String input, SelectorOptions options) {
+        utils.recursiveLocatorLookup(this.page, locator, options).type(input);
+    }
+
+    /**
      * Click the element specified by the selector.
      *
      * @param selector the selector of the element to click.
      */
     public void click(String selector) {
         this.page.click(selector);
+    }
+
+    /**
+     * Click the element specified by the locator.
+     *
+     * @param locator the locator of the element to click.
+     */
+    public void click(Locator locator) {
+        locator.click();
     }
 
     /**
@@ -387,29 +545,58 @@ public class BrowseTheWeb extends Ability {
     }
 
     /**
+     * Click the element specified by the locator.
+     *
+     * @param locator the locator of the element to click.
+     * @param options advanced selector lookup options.
+     */
+    public void click(Locator locator, SelectorOptions options) {
+        utils.recursiveLocatorLookup(this.page, locator, options).click();
+    }
+
+    /**
      * Double-click the element specified by the selector.
      *
-     * @param selector the selector of the element to double click.
+     * @param selector the selector of the element to double-click.
      */
     public void dblclick(String selector) {
         this.page.dblclick(selector);
     }
 
     /**
+     * Double-click the element specified by the locator.
+     *
+     * @param locator the locator of the element to double-click.
+     */
+    public void dblclick(Locator locator) {
+        locator.dblclick();
+    }
+
+    /**
      * Double-click the element specified by the selector.
      *
-     * @param selector the selector of the element to double click.
+     * @param selector the selector of the element to double-click.
      * @param options advanced selector lookup options.
      */
     public void dblclick(String selector, SelectorOptions options) {
         utils.recursiveLocatorLookup(this.page, selector, options).dblclick();
     }
 
+    /**
+     * Double-click the element specified by the locator.
+     *
+     * @param locator the selector of the element to double-click.
+     * @param options advanced selector lookup options.
+     */
+    public void dblclick(Locator locator, SelectorOptions options) {
+        utils.recursiveLocatorLookup(this.page, locator, options).dblclick();
+    }
+
 
     /**
      * Select a Dropdown menu option.
      *
-     * @param selector the selector of the element to hover over.
+     * @param selector the selector of the dropdown menu.
      * @param dropDownOption the dropDown option that should be selected.
      * @param optionMode the mode of the dropDownOption. Supported: "value", "index" and "label".
      */
@@ -431,7 +618,29 @@ public class BrowseTheWeb extends Ability {
     /**
      * Select a Dropdown menu option.
      *
-     * @param selector the selector of the element to hover over.
+     * @param locator the locator of the dropdown menu.
+     * @param dropDownOption the dropDown option that should be selected.
+     * @param optionMode the mode of the dropDownOption. Supported: "value", "index" and "label".
+     */
+    public List<String> selectOption(Locator locator, String dropDownOption, String optionMode) {
+        switch (optionMode) {
+            case "value" -> {
+                return locator.selectOption(new SelectOption().setValue(dropDownOption));
+            }
+            case "label" -> {
+                return locator.selectOption(new SelectOption().setLabel(dropDownOption));
+            }
+            case "index" -> {
+                return locator.selectOption(new SelectOption().setIndex(Integer.parseInt(dropDownOption)));
+            }
+            default -> throw new RuntimeException("Error: illegal optionMode! Please use either 'label', 'value' or 'index'.");
+        }
+    }
+
+    /**
+     * Select a Dropdown menu option.
+     *
+     * @param selector the selector of the dropdown menu.
      * @param dropDownOption the dropDown option that should be selected.
      * @param selectorOptions advanced selector lookup options.
      * @param optionMode the mode of the dropDownOption. Supported: "value", "index" and "label".
@@ -448,6 +657,32 @@ public class BrowseTheWeb extends Ability {
             }
             case "index" -> {
                 return utils.recursiveLocatorLookup(this.page, selector, selectorOptions)
+                        .selectOption(new SelectOption().setIndex(Integer.parseInt(dropDownOption)));
+            }
+            default -> throw new RuntimeException("Error in Select.option: illegal optionMode! Please use either 'label', 'value' or 'index'.");
+        }
+    }
+
+    /**
+     * Select a Dropdown menu option.
+     *
+     * @param locator the locator of the dropdown menu.
+     * @param dropDownOption the dropDown option that should be selected.
+     * @param selectorOptions advanced selector lookup options.
+     * @param optionMode the mode of the dropDownOption. Supported: "value", "index" and "label".
+     */
+    public List<String> selectOption(Locator locator, String dropDownOption, SelectorOptions selectorOptions, String optionMode) {
+        switch (optionMode) {
+            case "value" -> {
+                return utils.recursiveLocatorLookup(this.page, locator, selectorOptions)
+                        .selectOption(new SelectOption().setValue(dropDownOption));
+            }
+            case "label" -> {
+                return utils.recursiveLocatorLookup(this.page, locator, selectorOptions)
+                        .selectOption(new SelectOption().setLabel(dropDownOption));
+            }
+            case "index" -> {
+                return utils.recursiveLocatorLookup(this.page, locator, selectorOptions)
                         .selectOption(new SelectOption().setIndex(Integer.parseInt(dropDownOption)));
             }
             default -> throw new RuntimeException("Error in Select.option: illegal optionMode! Please use either 'label', 'value' or 'index'.");

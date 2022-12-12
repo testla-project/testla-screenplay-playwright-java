@@ -20,10 +20,16 @@ public class SelectorOptions {
     public Double timeout;
 
     /**
-     * Selector option subSelector
+     * Selector option subSelector (string selector)
      */
     @Nullable
     public SubSelector subSelector;
+
+    /**
+     * Selector option subLocator (Playwright Locator)
+     */
+    @Nullable
+    public SubLocator subLocator;
 
     /**
      * Selector option state
@@ -42,6 +48,7 @@ public class SelectorOptions {
      * Maybe it's better to handle optional arguments like playwright.
      */
     public SelectorOptions() {
+        // Empty constructor as a placeholder.
     }
 
     /**
@@ -74,6 +81,17 @@ public class SelectorOptions {
      */
     public SelectorOptions setSubSelector(SubSelector subSelector) {
         this.subSelector = subSelector;
+        return this;
+    }
+
+    /**
+     * Advanced selector option - subLocator
+     *
+     * @param subLocator the locator under a selector
+     * @return this instance
+     */
+    public SelectorOptions setSubLocator(SubLocator subLocator) {
+        this.subLocator = subLocator;
         return this;
     }
 

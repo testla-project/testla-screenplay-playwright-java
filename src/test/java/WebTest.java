@@ -12,6 +12,7 @@ import org.opentest4j.AssertionFailedError;
 import testla.screenplay.actor.Actor;
 import testla.web.SelectorOptions;
 import testla.web.SelectorOptionsState;
+import testla.web.SubLocator;
 import testla.web.SubSelector;
 import testla.web.abilities.BrowseTheWeb;
 import testla.web.actions.Add;
@@ -63,7 +64,6 @@ class WebTest {
         actor.attemptsTo(
                 Navigate.to("https://google.de")
         );
-        // Page actorPage = (Page) actor.states("page");
         assertThat(actorPage).hasURL("https://www.google.de/");
     }
 
@@ -185,7 +185,7 @@ class WebTest {
                 Wait.forLoadState(LoadState.NETWORKIDLE),
 
                 Wait.forSelector("[id='table1']",
-                        new SelectorOptions().setSubSelector(new SubSelector("tbody tr",
+                        new SelectorOptions().setSubLocator(new SubLocator(actorPage.locator("tbody tr"),
                                 new SelectorOptions().setHasText("Conway")
                                         .setSubSelector(new SubSelector("td:has-text('$50.00')", null)))))
         );
