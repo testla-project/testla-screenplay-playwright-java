@@ -693,7 +693,7 @@ public class BrowseTheWeb extends Ability {
      * Validate if a locator on the page is visible or hidden.
      *
      * @param mode the expected property of the selector that needs to be checked. either 'visible' or 'hidden'.
-     * @param selector the locator to search for.
+     * @param selector the selector to search for.
      * @returns true if the element is visible/hidden as expected, false if the timeout was reached.
      */
     public boolean checkVisibilityState(String selector, Modes mode) {
@@ -714,7 +714,28 @@ public class BrowseTheWeb extends Ability {
      * Validate if a locator on the page is visible or hidden.
      *
      * @param mode the expected property of the selector that needs to be checked. either 'visible' or 'hidden'.
-     * @param selector the locator to search for.
+     * @param locator the locator to search for.
+     * @returns true if the element is visible/hidden as expected, false if the timeout was reached.
+     */
+    public boolean checkVisibilityState(Locator locator, Modes mode) {
+        switch (mode) {
+            case VISIBLE    -> assertThat(utils.recursiveLocatorLookup(page, locator,
+                    new SelectorOptions().setSelectorOptionsState(SelectorOptionsState.VISIBLE)))
+                    .isVisible();
+            case HIDDEN     -> assertThat(utils.recursiveLocatorLookup(page, locator,
+                    new SelectorOptions().setSelectorOptionsState(SelectorOptionsState.HIDDEN)))
+                    .isHidden();
+            default         -> throw new RuntimeException("Wrong mode for checkVisibilityState(): " + mode +
+                    " Please use VISIBLE or HIDDEN.");
+        }
+        return true;
+    }
+
+    /**
+     * Validate if a locator on the page is visible or hidden.
+     *
+     * @param mode the expected property of the selector that needs to be checked. either 'visible' or 'hidden'.
+     * @param selector the selector to search for.
      * @param options advanced selector lookup options.
      * @returns true if the element is visible/hidden as expected, false if the timeout was reached.
      */
@@ -733,9 +754,31 @@ public class BrowseTheWeb extends Ability {
     }
 
     /**
+     * Validate if a locator on the page is visible or hidden.
+     *
+     * @param mode the expected property of the selector that needs to be checked. either 'visible' or 'hidden'.
+     * @param locator the locator to search for.
+     * @param options advanced selector lookup options.
+     * @returns true if the element is visible/hidden as expected, false if the timeout was reached.
+     */
+    public boolean checkVisibilityState(Locator locator, Modes mode, SelectorOptions options) {
+        switch (mode) {
+            case VISIBLE    -> assertThat(utils.recursiveLocatorLookup(this.page, locator,
+                    options.setSelectorOptionsState(SelectorOptionsState.VISIBLE))) // explicitly set the expected state to visible
+                    .isVisible(new IsVisibleOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            case HIDDEN     -> assertThat(utils.recursiveLocatorLookup(this.page, locator,
+                    options.setSelectorOptionsState(SelectorOptionsState.HIDDEN))) // explicitly set the expected state to hidden
+                    .isHidden(new IsHiddenOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            default         -> throw new RuntimeException("Wrong mode for checkVisibilityState(): " + mode +
+                    " Please use VISIBLE or HIDDEN.");
+        }
+        return true;
+    }
+
+    /**
      * Validate if a locator on the page is enabled or disabled.
      *
-     * @param selector the locator to search for.
+     * @param selector the selector to search for.
      * @param mode the expected property of the selector that needs to be checked. either 'enabled' or 'disabled'.
      * @returns true if the element is enabled/disabled as expected, false if the timeout was reached.
      */
@@ -756,7 +799,28 @@ public class BrowseTheWeb extends Ability {
     /**
      * Validate if a locator on the page is enabled or disabled.
      *
-     * @param selector the locator to search for.
+     * @param locator the locator to search for.
+     * @param mode the expected property of the selector that needs to be checked. either 'enabled' or 'disabled'.
+     * @returns true if the element is enabled/disabled as expected, false if the timeout was reached.
+     */
+    public boolean checkEnabledState(Locator locator, Modes mode) {
+        switch (mode) {
+            case ENABLED    -> assertThat(utils.recursiveLocatorLookup(page, locator,
+                    new SelectorOptions().setSelectorOptionsState(SelectorOptionsState.VISIBLE)))
+                    .isEnabled();
+            case DISABLED     -> assertThat(utils.recursiveLocatorLookup(page, locator,
+                    new SelectorOptions().setSelectorOptionsState(SelectorOptionsState.VISIBLE)))
+                    .isDisabled();
+            default         -> throw new RuntimeException("Wrong mode for checkEnabledState(): " + mode +
+                    " Please use ENABLED or DISABLED.");
+        }
+        return true;
+    }
+
+    /**
+     * Validate if a locator on the page is enabled or disabled.
+     *
+     * @param selector the selector to search for.
      * @param mode the expected property of the selector that needs to be checked. either 'enabled' or 'disabled'.
      * @param options advanced selector lookup options.
      * @returns true if the element is enabled/disabled as expected, false if the timeout was reached.
@@ -771,6 +835,28 @@ public class BrowseTheWeb extends Ability {
                                 .isDisabled(new IsDisabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
             default         -> throw new RuntimeException("Wrong mode for checkEnabledState(): " + mode +
                                     " Please use ENABLED or DISABLED.");
+        }
+        return true;
+    }
+
+    /**
+     * Validate if a locator on the page is enabled or disabled.
+     *
+     * @param locator the locator to search for.
+     * @param mode the expected property of the selector that needs to be checked. either 'enabled' or 'disabled'.
+     * @param options advanced selector lookup options.
+     * @returns true if the element is enabled/disabled as expected, false if the timeout was reached.
+     */
+    public boolean checkEnabledState(Locator locator, Modes mode, SelectorOptions options) {
+        switch (mode) {
+            case ENABLED    -> assertThat(utils.recursiveLocatorLookup(this.page, locator,
+                    options.setSelectorOptionsState(SelectorOptionsState.VISIBLE))) // explicitly set the expected state to visible
+                    .isEnabled(new IsEnabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            case DISABLED   -> assertThat(utils.recursiveLocatorLookup(this.page, locator,
+                    options.setSelectorOptionsState(SelectorOptionsState.VISIBLE))) // explicitly set the expected state to visible
+                    .isDisabled(new IsDisabledOptions().setTimeout(options.timeout == null ? 0.0 : options.timeout));
+            default         -> throw new RuntimeException("Wrong mode for checkEnabledState(): " + mode +
+                    " Please use ENABLED or DISABLED.");
         }
         return true;
     }

@@ -7,7 +7,7 @@ import testla.web.SelectorOptions;
 import testla.web.abilities.BrowseTheWeb;
 
 /**
- * Action Class. Click on an element specified by a selector string.
+ * Action Class. Double-Click on an element specified by a selector string.
  */
 public class DoubleClick extends Action {
 
@@ -40,7 +40,7 @@ public class DoubleClick extends Action {
     }
 
     /**
-     * Specify which element should be clicked on.
+     * Double-Click the specified element.
      *
      * @param selector the string representing the selector.
      */
@@ -49,7 +49,7 @@ public class DoubleClick extends Action {
     }
 
     /**
-     * Specify which element should be clicked on.
+     * Double-Click the specified element.
      *
      * @param selector the string representing the selector.
      * @param options advanced selector lookup options.
@@ -59,7 +59,7 @@ public class DoubleClick extends Action {
     }
 
     /**
-     * Specify which element should be clicked on.
+     * Double-Click the specified element.
      *
      * @param locator the existing Playwright locator.
      */
@@ -68,7 +68,7 @@ public class DoubleClick extends Action {
     }
 
     /**
-     * Specify which element should be clicked on.
+     * Double-Click the specified element.
      *
      * @param locator the existing Playwright locator.
      * @param options advanced selector lookup options.
@@ -78,7 +78,7 @@ public class DoubleClick extends Action {
     }
 
     /**
-     * Find the specified selector and click on it.
+     * Find the specified selector and double-click it.
      *
      * @param actor the actor.
      */
